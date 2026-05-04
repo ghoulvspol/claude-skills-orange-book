@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Skills 橙皮书</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --orange: #F57C00;
+    --orange-dark: #E65100;
+    --orange-light: #FFF3E0;
+    --orange-border: #FF9800;
+    --text: #212121;
+    --text-secondary: #616161;
+    --text-muted: #9E9E9E;
+    --bg: #FAFAFA;
+    --bg-white: #FFFFFF;
+    --divider: #E0E0E0;
+    --sidebar-width: 300px;
+    --header-height: 56px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 76px;
+  }
+
+  body {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Inter', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  /* ── Header ── */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: #1a1a1a;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 1000;
+  }
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px 4px 0;
+  }
+  .header-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-badge {
+    font-size: 11px;
+    background: rgba(255,255,255,0.12);
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-white);
+    border-right: 1px solid var(--divider);
+    overflow-y: auto;
+    padding: 16px 0;
+    z-index: 900;
+    transition: transform 0.3s ease;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #CCC; border-radius: 2px; }
+
+  .sidebar-search {
+    padding: 0 16px 12px;
+  }
+  .sidebar-search input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .sidebar-search input:focus {
+    border-color: var(--orange);
+    background: white;
+  }
+  .sidebar-search input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .nav-part {
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 16px 20px 6px;
+  }
+  .nav-part a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .nav-part a:hover { color: var(--orange); }
+
+  .nav-section {
+    font-size: 14px;
+    padding: 2px 16px;
+  }
+  .nav-section a {
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-weight: 400;
+  }
+  .nav-section a:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+  }
+  .nav-section.active a {
+    background: var(--orange-light);
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  .nav-subsection {
+    font-size: 13px;
+    padding: 1px 16px 1px 32px;
+  }
+  .nav-subsection a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: block;
+    padding: 3px 12px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .nav-subsection a:hover {
+    color: var(--orange);
+    background: var(--orange-light);
+  }
+  .nav-subsection.active a {
+    color: var(--orange);
+    font-weight: 500;
+  }
+
+  /* ── Main Content ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--header-height);
+    padding: 40px 56px 80px;
+    max-width: 880px;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(135deg, #FF6D00 0%, #FF9800 40%, #FFB74D 100%);
+    color: white;
+    padding: 56px 40px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+  .cover-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.4);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 3px;
+  }
+  .cover-title {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    opacity: 0.85;
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .cover-meta {
+    font-size: 13px;
+    opacity: 0.75;
+    line-height: 2.2;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding-top: 16px;
+  }
+  .cover-meta strong { opacity: 1; font-weight: 500; }
+
+  /* ── Typography ── */
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--orange);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--orange);
+    scroll-margin-top: 76px;
+  }
+  h1:first-of-type { margin-top: 0; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--divider);
+    scroll-margin-top: 76px;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #424242;
+    margin: 24px 0 8px;
+    scroll-margin-top: 76px;
+  }
+
+  h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #616161;
+    margin: 16px 0 8px;
+  }
+
+  p { margin: 0 0 12px; }
+
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+
+  code {
+    font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    font-size: 13px;
+    background: #F5F5F5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #E64A19;
+  }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 20px 24px;
+    border-radius: 8px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--divider);
+    margin: 32px 0;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--orange-border);
+    padding: 12px 16px;
+    margin: 16px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: var(--orange-light);
+    border-radius: 0 6px 6px 0;
+  }
+
+  a {
+    color: var(--orange);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  a:hover {
+    color: var(--orange-dark);
+    text-decoration: underline;
+  }
+
+  /* ── Tables ── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th {
+    background: var(--orange);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #EEEEEE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #FAFAFA; }
+  tr:hover td { background: var(--orange-light); }
+
+  /* ── Lists ── */
+  ul, ol {
+    margin: 8px 0 12px 24px;
+    padding-left: 16px;
+  }
+  li { margin-bottom: 6px; }
+
+  /* ── Callout ── */
+  .callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .callout-emoji {
+    font-size: 20px;
+    line-height: 1.5;
+    flex-shrink: 0;
+  }
+  .callout-body {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .callout-body p { margin-bottom: 6px; }
+  .callout-body p:last-child { margin-bottom: 0; }
+  .callout-body strong { font-weight: 700; }
+  .callout-body table { margin: 8px 0; }
+
+  /* ── Grid ── */
+  .grid {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .grid-2 .col, .grid-3 .col { flex: 1; }
+  .col { min-width: 0; }
+  .col p { margin-bottom: 8px; }
+
+  /* ── Back to Top ── */
+  .back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    z-index: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .back-to-top:hover {
+    background: var(--orange-dark);
+    transform: translateY(-2px);
+  }
+
+  /* ── Overlay ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 850;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--divider);
+    margin-top: 48px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .menu-toggle { display: block; }
+
+    .sidebar {
+      transform: translateX(-100%);
+      width: 280px;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .overlay.open { display: block; }
+
+    .main {
+      margin-left: 0;
+      padding: 24px 16px 60px;
+    }
+
+    .cover {
+      padding: 32px 24px;
+    }
+    .cover-title { font-size: 28px; }
+
+    .back-to-top {
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+  <span class="header-title">Claude Code Skills 橙皮书</span>
+  <div class="header-right">
+    <span class="header-badge">v1.0</span>
+    <span class="header-badge">滔哥</span>
+  </div>
+</header>
+
+<!-- Overlay -->
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-search">
+    <input type="text" placeholder="搜索章节..." id="searchInput" oninput="filterNav(this.value)">
+  </div>
+  <div class="nav-part"><a href="#part-1-认识-skills">Part 1: 认识 Skills</a></div>
+<div class="nav-section"><a href="#section-01-skills-是什么">§01 Skills 是什么</a></div>
+<div class="nav-section"><a href="#section-02-skills-的文件结构">§02 Skills 的文件结构</a></div>
+<div class="nav-section"><a href="#section-03-skills-的安装和管理">§03 Skills 的安装和管理</a></div>
+<div class="nav-section"><a href="#section-04-第一个-skill-10分钟上手">§04 第一个 Skill：10分钟上手</a></div>
+<div class="nav-part"><a href="#part-2-使用-skills">Part 2: 使用 Skills</a></div>
+<div class="nav-section"><a href="#section-05-skills-的触发机制">§05 Skills 的触发机制</a></div>
+<div class="nav-section"><a href="#section-06-skills-的三级渐进式加载">§06 Skills 的三级渐进式加载</a></div>
+<div class="nav-section"><a href="#section-07-常用内置-skills-详解">§07 常用内置 Skills 详解</a></div>
+<div class="nav-section"><a href="#section-08-社区-skills-生态">§08 社区 Skills 生态</a></div>
+<div class="nav-part"><a href="#part-3-创建-skills">Part 3: 创建 Skills</a></div>
+<div class="nav-section"><a href="#section-09-skill-md-的编写规范">§09 SKILL.md 的编写规范</a></div>
+
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-tag">Orange Paper · 橙皮书</div>
+  <h1 class="cover-title" style="border:none;color:white;margin:0;padding:0;">Claude Code Skills<br>橙皮书</h1>
+  <div class="cover-subtitle">用技能扩展AI编程的边界</div>
+  <div class="cover-meta">
+    <strong>版本</strong>：v1.0<br>
+    <strong>作者</strong>：滔哥<br>
+    <strong>为谁创建</strong>：Claude Code 用户、AI 工具开发者、技术团队负责人<br>
+    <strong>基于</strong>：Claude Code Skills 生态（2026年5月）<br>
+    <strong>最后更新</strong>：2026年5月4日
+  </div>
+</div>
+
+<h1 id="claude-code-skills-橙皮书">Claude Code Skills 橙皮书</h1>
+<p>用技能扩展AI编程的边界</p>
+<p><strong>版本</strong>: v1.0</p>
+<p><strong>作者</strong>: 滔哥</p>
+<p><strong>为谁创建</strong>: Claude Code 用户、AI 工具开发者、技术团队负责人</p>
+<p><strong>基于</strong>: Claude Code Skills 生态（2026年5月）</p>
+<p><strong>最后更新</strong>: 2026年5月4日</p>
+<p><strong>适用场景</strong>: 技能开发、工作流定制、团队效率提升、AI 编程进阶</p>
+<hr>
+<h2 id="前言">前言</h2>
+<p>2026年4月，我在一个项目里用了30多个 Skills。</p>
+<p>不是因为我想收集，是因为每个 Skill 真的能解决一个问题。有的帮我写测试，有的帮我做设计，有的帮我审查代码安全。以前这些事情要么手动做，要么写一堆脚本。现在一个 SKILL.md 文件就搞定了。</p>
+<p>Claude Code Skills 是什么？一句话：<strong>给 Claude Code 装技能包</strong>。</p>
+<p>你的 Claude Code 默认什么都会一点，但什么都不精。装上 Skill 之后，它在某个领域突然变强了。就像游戏里给角色装装备——本体能力不变，但输出完全不同。</p>
+<p>这本书是我基于 Claude Code Skills 生态的实际使用经验写的深度手册。它不是功能列表的翻译，而是告诉你怎么用 Skills、怎么写 Skills、怎么用 Skills 构建完整的工作流。</p>
+<p><strong>这本书能帮你做到什么：</strong></p>
+<ul>
+<li>30分钟上手 Claude Code Skills，安装并使用第一个 Skill</li>
+<li>1天内掌握 Skills 的核心机制，知道什么时候触发、怎么加载</li>
+<li>1周内学会自己写 Skills，把你的工作流变成可复用的技能包</li>
+<li>1个月内用 Skills 构建完整的开发流程，从编码到部署</li>
+</ul>
+<p><strong>这本书不适合谁：</strong></p>
+<ul>
+<li>想找"开箱即用完美方案"的人——Skills 需要你根据项目调整</li>
+<li>不愿意写 SKILL.md 的人——最好的 Skill 是自己写的</li>
+<li>把 AI 当万能的人——Skills 是工具，不是魔法</li>
+</ul>
+<p>好，我们开始。</p>
+<hr>
+<h2 id="阅读指南">阅读指南</h2>
+<div class="table-wrapper"><table>
+<tr><th>时间</th><th>章节</th><th>目标</th></tr>
+<tr><td>Day 1</td><td>§01-§04</td><td>理解 Skills，安装并使用第一个 Skill</td></tr>
+<tr><td>Day 2</td><td>§05-§08</td><td>掌握触发机制，熟悉内置和社区 Skills</td></tr>
+<tr><td>Day 3</td><td>§09-§12</td><td>学会创建自己的 Skills</td></tr>
+<tr><td>Day 4-5</td><td>§13-§16</td><td>进阶技巧，多 Skills 协作</td></tr>
+<tr><td>Day 6</td><td>§17-§20</td><td>浏览 Skills 生态全集</td></tr>
+<tr><td>Day 7</td><td>§21-§23</td><td>实战场景，综合运用</td></tr>
+</table></div>
+<hr>
+<h2 id="part-1-认识-skills">Part 1: 认识 Skills</h2>
+<p>从零开始。读完这部分，你会知道 Skills 是什么、能做什么、跟其他扩展方式的本质区别是什么。</p>
+<hr>
+<h2 id="section-01-skills-是什么">§01 Skills 是什么</h2>
+<h3 id="01-1-一个真实的场景">01.1 一个真实的场景</h3>
+<p>2026年3月。我在做一个 React 项目。写完功能代码，该写测试了。</p>
+<p>以前的流程：打开 Jest 文档 → 复制模板 → 改改改 → 跑一下 → 报错 → 再改。一轮下来20分钟。</p>
+<p>那天我试了一下项目里的一个 Skill。在 Claude Code 里输入 <code>/tdd</code>。Claude 自动读取了我的代码，理解了组件结构，生成了完整的测试文件。跑一下，过了。</p>
+<p>3分钟。</p>
+<p>这就是 Skills 的价值。<strong>不是让 AI 更聪明，是让 AI 更专注。</strong></p>
+<h3 id="01-2-skills-的本质">01.2 Skills 的本质</h3>
+<p>Skills 本质上是一个<strong>指令包</strong>。它告诉 Claude Code：</p>
+<ul>
+<li>你是谁（角色定位）</li>
+<li>你要做什么（任务描述）</li>
+<li>你怎么做的（工作流程）</li>
+<li>你用什么工具（脚本、参考文件）</li>
+</ul>
+<p>没有 Skills，Claude Code 是一个什么都会的通才。</p>
+<p>装上 Skills，Claude Code 是某个领域的专家。</p>
+<pre><code class="language-text">Claude Code + Skills = 通才 + 专业装备</code></pre>
+<h3 id="01-3-skills-vs-其他扩展方式">01.3 Skills vs 其他扩展方式</h3>
+<div class="table-wrapper"><table>
+<tr><th>扩展方式</th><th>本质</th><th>适用场景</th><th>复杂度</th></tr>
+<tr><td>CLAUDE.md</td><td>全局指令</td><td>项目规范、通用规则</td><td>低</td></tr>
+<tr><td>Skills</td><td>领域专精</td><td>特定任务的工作流</td><td>中</td></tr>
+<tr><td>Agents</td><td>任务执行</td><td>多步骤自动化</td><td>高</td></tr>
+<tr><td>MCP Server</td><td>外部能力</td><td>访问外部系统</td><td>高</td></tr>
+</table></div>
+<p><strong>重点看第三列。</strong></p>
+<p>CLAUDE.md 适合写"代码风格用2空格"这种全局规则。Skills 适合写"写测试时先分析代码结构再生成"这种专业工作流。Agent 适合做"从代码到部署"这种多步骤任务。MCP Server 适合连飞书、GitHub 这种外部系统。</p>
+<p>它们不冲突，可以叠加。一个项目里，CLAUDE.md 定规范，Skills 定专业流程，Agent 做自动化。</p>
+<h3 id="01-4-核心价值">01.4 核心价值</h3>
+<p>Skills 给 Claude Code 带来的三个核心价值：</p>
+<p><strong>第一，专注。</strong> 没有 Skills 的时候，Claude Code 每次都要从零理解你的需求。装上 Skill，它已经知道该怎么做。</p>
+<p><strong>第二，复用。</strong> 你花一下午调好的工作流，打包成 Skill，下次直接用。团队其他人也能用。</p>
+<p><strong>第三，标准化。</strong> 10个人用同一个 Skill，产出质量一致。不会出现"小王写得好，小李写得差"的情况。</p>
+<blockquote><strong>滔哥的经验</strong>：<br><br>我一开始觉得 Skills 是"高级用户才需要的东西"。用了一个月后发现，越是日常任务越需要 Skills。因为日常任务重复度高，一个好 Skill 能省下的时间是指数级的。</blockquote>
+<p>§01讲了"为什么"。§02讲 Skills 的文件结构——一个 Skill 到底长什么样。</p>
+<hr>
+<h2 id="section-02-skills-的文件结构">§02 Skills 的文件结构</h2>
+<h3 id="02-1-一个-skill-的最小组成">02.1 一个 Skill 的最小组成</h3>
+<p>一个 Skill 最少只需要一个文件：</p>
+<pre><code class="language-text">my-skill/
+└── SKILL.md</code></pre>
+<p>就这么简单。SKILL.md 是 Skill 的核心。没有它，Skill 不存在。</p>
+<h3 id="02-2-skill-md-的两部分">02.2 SKILL.md 的两部分</h3>
+<p>SKILL.md 由两部分组成：</p>
+<pre><code class="language-markdown">---
+name: my-skill
+description: 这个 Skill 做什么
+---
+
+# 这里是 Skill 的正文
+
+具体的工作流程、规则、模板...</code></pre>
+<p><strong>第一部分：YAML 前置元数据（frontmatter）</strong></p>
+<p>用 <code>---</code> 包裹，定义 Skill 的基本信息。</p>
+<div class="table-wrapper"><table>
+<tr><th>字段</th><th>必填</th><th>说明</th></tr>
+<tr><td>name</td><td>是</td><td>Skill 的名称，用于 <code>/name</code> 触发</td></tr>
+<tr><td>description</td><td>是</td><td>一句话描述，Claude 用它判断什么时候触发</td></tr>
+<tr><td>model</td><td>否</td><td>指定使用的模型（haiku/sonnet/opus）</td></tr>
+<tr><td>user-invocable</td><td>否</td><td>是否可以被用户直接调用（默认 true）</td></tr>
+</table></div>
+<p><strong>第二部分：Markdown 正文</strong></p>
+<p>告诉 Claude 具体怎么做。这是 Skill 的灵魂。</p>
+<h3 id="02-3-完整的-skill-目录结构">02.3 完整的 Skill 目录结构</h3>
+<p>一个完整的 Skill 可以包含更多内容：</p>
+<pre><code class="language-text">my-skill/
+├── SKILL.md              # 核心指令（必需）
+├── scripts/              # 可执行脚本
+│   ├── preamble.sh       # 前置脚本（每次触发先运行）
+│   ├── build.sh          # 构建脚本
+│   └── test.sh           # 测试脚本
+├── references/           # 参考文档
+│   ├── patterns.md       # 代码模式
+│   └── examples/         # 示例代码
+├── assets/               # 静态资源
+│   ├── template.html     # 模板文件
+│   └── config.json       # 配置文件
+├── _metadata.json        # 元数据（版本、作者等）
+└── tools.yml             # 工具声明</code></pre>
+<p>不是每个 Skill 都需要这些。简单的工作流只要 SKILL.md。复杂的工具型 Skill 才需要脚本和资源。</p>
+<h3 id="02-4-各目录的作用">02.4 各目录的作用</h3>
+<div class="table-wrapper"><table>
+<tr><th>目录</th><th>作用</th><th>什么时候用</th></tr>
+<tr><td>SKILL.md</td><td>定义 Skill 的行为</td><td>必须</td></tr>
+<tr><td>scripts/</td><td>运行时执行的脚本</td><td>需要调用外部命令时</td></tr>
+<tr><td>references/</td><td>提供给 Claude 的参考文档</td><td>需要 Claude 参考模式或示例时</td></tr>
+<tr><td>assets/</td><td>模板和静态资源</td><td>需要生成文件时</td></tr>
+<tr><td>_metadata.json</td><td>Skill 的版本和元信息</td><td>发布到社区时</td></tr>
+<tr><td>tools.yml</td><td>声明需要的工具</td><td>Skill 依赖外部工具时</td></tr>
+</table></div>
+<h3 id="02-5-三级渐进式加载">02.5 三级渐进式加载</h3>
+<p>这是 Skills 最精妙的设计。</p>
+<pre><code class="language-text">Level 1: 元数据（始终在上下文中）
+    ↓ 需要时加载
+Level 2: SKILL.md 正文（触发时加载）
+    ↓ 需要时加载
+Level 3: 脚本和参考文件（按需加载）</code></pre>
+<p><strong>Level 1</strong> 是 description 字段。它始终在 Claude 的上下文里，但只有一句话。Claude 用它判断"这个 Skill 跟当前任务相关吗"。</p>
+<p><strong>Level 2</strong> 是 SKILL.md 的正文。当 Claude 判断相关，或者用户直接输入 <code>/skill-name</code> 时，正文被加载。</p>
+<p><strong>Level 3</strong> 是脚本和参考文件。只有 SKILL.md 里明确引用时才加载。</p>
+<p>这个设计很关键。因为上下文窗口有限。如果所有 Skill 的全部内容都加载，Claude 的上下文早就爆了。三级加载保证了：<strong>只加载需要的，忽略不需要的。</strong></p>
+<blockquote><strong>核心建议</strong>：<br><br>写 Skill 时，把最重要的信息放在 SKILL.md 正文里。参考文件放 Level 3。不要把所有东西都塞进 SKILL.md——它会被优先加载，太大了浪费上下文。</blockquote>
+<p>§02讲了 Skill 长什么样。§03讲怎么安装和管理。</p>
+<hr>
+<h2 id="section-03-skills-的安装和管理">§03 Skills 的安装和管理</h2>
+<h3 id="03-1-三种安装方式">03.1 三种安装方式</h3>
+<div class="table-wrapper"><table>
+<tr><th>方式</th><th>命令</th><th>适用场景</th></tr>
+<tr><td>npm</td><td><code>npx skills add <name></code></td><td>社区 Skills</td></tr>
+<tr><td>插件</td><td><code>/plugin install <name></code></td><td>插件市场 Skills</td></tr>
+<tr><td>手动</td><td><code>git clone</code> + 复制目录</td><td>自定义 Skills</td></tr>
+</table></div>
+<h3 id="03-2-npm-安装">03.2 npm 安装</h3>
+<p>最简单的方式。</p>
+<pre><code class="language-bash">npx skills add nuwa-skill</code></pre>
+<p>这条命令会：</p>
+<ol>
+<li>从 npm 下载 Skill 包</li>
+<li>复制到项目的 <code>.claude/skills/</code> 目录</li>
+<li>自动注册到 Claude Code</li>
+</ol>
+<p>安装完成后，输入 <code>/nuwa-skill</code> 就能触发。</p>
+<h3 id="03-3-插件安装">03.3 插件安装</h3>
+<p>如果 Skill 发布在 Claude Code 的插件市场：</p>
+<pre><code class="language-bash">/plugin install huashu-design</code></pre>
+<h3 id="03-4-手动安装">03.4 手动安装</h3>
+<p>最灵活的方式。适合你自己写的 Skill，或者从 GitHub 克隆的 Skill。</p>
+<pre><code class="language-bash"># 克隆仓库
+git clone https://github.com/example/awesome-skill.git
+
+# 复制到 skills 目录
+cp -r awesome-skill .claude/skills/
+
+# 或者直接在 .claude/skills/ 下创建
+mkdir -p .claude/skills/my-skill</code></pre>
+<h3 id="03-5-skills-的存放位置">03.5 Skills 的存放位置</h3>
+<p>Skills 可以放在三个地方：</p>
+<div class="table-wrapper"><table>
+<tr><th>位置</th><th>路径</th><th>作用域</th></tr>
+<tr><td>项目级</td><td><code>项目/.claude/skills/</code></td><td>当前项目</td></tr>
+<tr><td>用户级</td><td><code>~/.claude/skills/</code></td><td>所有项目</td></tr>
+<tr><td>全局级</td><td>npm / 插件市场</td><td>跨项目共享</td></tr>
+</table></div>
+<p><strong>项目级</strong>放项目特有的 Skills。比如这个项目的测试规范、部署流程。</p>
+<p><strong>用户级</strong>放你个人通用的 Skills。比如你写代码的习惯、常用的 prompt 模板。</p>
+<p><strong>全局级</strong>放社区共享的 Skills。经过社区验证，质量有保证。</p>
+<h3 id="03-6-查看已安装的-skills">03.6 查看已安装的 Skills</h3>
+<pre><code class="language-bash">ls .claude/skills/
+ls ~/.claude/skills/</code></pre>
+<p>每个目录就是一个 Skill。目录名就是 Skill 名。</p>
+<h3 id="03-7-卸载-skills">03.7 卸载 Skills</h3>
+<pre><code class="language-bash">rm -rf .claude/skills/my-skill</code></pre>
+<p>就这么直接。删除目录就卸载了。</p>
+<blockquote><strong>滔哥的经验</strong>：<br><br>我的习惯是：先装几个社区 Skills 跑通流程，然后开始自己写。社区 Skills 质量参差不齐，自己的才是最合手的。别怕写 SKILL.md，它比你想象的简单。</blockquote>
+<p>§03讲了安装。§04我们来做第一个项目——安装一个 Skill 并使用它。</p>
+<hr>
+<h2 id="section-04-第一个-skill-10分钟上手">§04 第一个 Skill：10分钟上手</h2>
+<h3 id="04-1-你需要什么">04.1 你需要什么</h3>
+<ul>
+<li>Claude Code 已安装并可用</li>
+<li>一个项目目录</li>
+</ul>
+<p>预计时间：10分钟。</p>
+<h3 id="04-2-安装一个社区-skill">04.2 安装一个社区 Skill</h3>
+<p>打开终端，进入你的项目目录：</p>
+<pre><code class="language-bash">cd your-project
+npx skills add alirezarezvani/claude-skills/skills/code-reviewer</code></pre>
+<p>如果 npm 不行，手动克隆：</p>
+<pre><code class="language-bash">git clone https://github.com/alirezarezvani/claude-skills.git /tmp/claude-skills
+mkdir -p .claude/skills
+cp -r /tmp/claude-skills/skills/code-reviewer .claude/skills/</code></pre>
+<h3 id="04-3-查看-skill-内容">04.3 查看 Skill 内容</h3>
+<pre><code class="language-bash">cat .claude/skills/code-reviewer/SKILL.md</code></pre>
+<p>你会看到类似这样的结构：</p>
+<pre><code class="language-markdown">---
+name: code-reviewer
+description: Review code for best practices, bugs, and improvements
+---
+
+# Code Reviewer Skill
+
+When reviewing code, follow this process:
+
+1. **Read the code** - Understand what it does
+2. **Check for bugs** - Look for common patterns
+3. **Review style** - Check naming, structure
+4. **Suggest improvements** - Actionable feedback
+...</code></pre>
+<h3 id="04-4-使用-skill">04.4 使用 Skill</h3>
+<p>打开 Claude Code：</p>
+<pre><code class="language-bash">claude</code></pre>
+<p>在 Claude Code 中输入：</p>
+<pre><code class="language-text">/review</code></pre>
+<p>或者描述你的需求：</p>
+<pre><code class="language-text">帮我审查一下 src/index.ts 的代码质量</code></pre>
+<p>Claude 会自动触发 code-reviewer Skill，按照 Skill 定义的流程审查你的代码。</p>
+<h3 id="04-5-看看输出">04.5 看看输出</h3>
+<p>Skill 会按以下流程输出：</p>
+<ol>
+<li>读取代码文件</li>
+<li>分析代码结构</li>
+<li>列出发现的问题</li>
+<li>给出改进建议</li>
+</ol>
+<p>每个步骤都有清晰的说明。比直接让 Claude "帮我看看代码" 专业得多。</p>
+<h3 id="04-6-回顾">04.6 回顾</h3>
+<p>10分钟，从安装到使用。跑通了这个流程，你就知道 Skills 是怎么回事了。</p>
+<p>关键收获：</p>
+<ul>
+<li>Skills 就是一个目录，里面有一个 SKILL.md</li>
+<li>SKILL.md 定义了 Claude 的工作流程</li>
+<li>安装就是复制目录，使用就是输入 <code>/skill-name</code></li>
+</ul>
+<p>§04完成了第一个项目。§05开始深入 Skills 的触发机制——Claude 怎么知道该用哪个 Skill。</p>
+<blockquote><strong>核心建议</strong>：<br><br>第一个 Skill 不要自己写。先用社区的，跑通流程，理解 Skills 是怎么工作的。然后再开始自己写。站在别人肩膀上，比从零开始效率高。</blockquote>
+<hr>
+<h2 id="part-2-使用-skills">Part 2: 使用 Skills</h2>
+<p>掌握 Skills 的触发和加载机制。读完这部分，你会知道 Skills 什么时候启动、怎么加载、怎么跟 Claude 的上下文配合。</p>
+<hr>
+<h2 id="section-05-skills-的触发机制">§05 Skills 的触发机制</h2>
+<h3 id="05-1-两种触发方式">05.1 两种触发方式</h3>
+<div class="table-wrapper"><table>
+<tr><th>触发方式</th><th>示例</th><th>谁决定</th></tr>
+<tr><td>用户显式触发</td><td><code>/review</code>、<code>/tdd</code></td><td>用户</td></tr>
+<tr><td>Claude 自动触发</td><td>"帮我写测试" → 自动加载 tdd Skill</td><td>Claude</td></tr>
+</table></div>
+<p><strong>用户显式触发</strong>最可靠。你输入 <code>/skill-name</code>，Claude 直接加载对应的 SKILL.md。</p>
+<p><strong>Claude 自动触发</strong>更智能。Claude 根据你的描述和 Skill 的 description 字段，判断哪个 Skill 最相关。但有时候会判断错。</p>
+<h3 id="05-2-description-字段的重要性">05.2 description 字段的重要性</h3>
+<p>description 是 Skills 触发的关键。Claude 用它来判断"这个 Skill 跟当前任务相关吗"。</p>
+<pre><code class="language-yaml"># 好的 description
+description: Review code for best practices, bugs, and security issues
+
+# 不好的 description
+description: A tool for code</code></pre>
+<p>好的 description 具体、明确。不好的 description 太模糊，Claude 不知道什么时候该触发。</p>
+<h3 id="05-3-显式触发的写法">05.3 显式触发的写法</h3>
+<pre><code class="language-text">/review              # 最简洁
+/review src/main.ts  # 带参数
+/skill:review        # 带前缀（如果配置了 SKILL_PREFIX）</code></pre>
+<h3 id="05-4-自动触发的条件">05.4 自动触发的条件</h3>
+<p>Claude 自动触发 Skill 需要满足：</p>
+<ol>
+<li>Skill 的 description 跟当前任务相关</li>
+<li>Skill 的 user-invocable 不是 false</li>
+<li>当前没有其他 Skill 正在执行</li>
+</ol>
+<p>如果你不想让某个 Skill 被自动触发：</p>
+<pre><code class="language-yaml">---
+name: my-private-skill
+description: 只有我知道的 Skill
+user-invocable: false
+---</code></pre>
+<h3 id="05-5-冲突处理">05.5 冲突处理</h3>
+<p>如果多个 Skill 的 description 都跟当前任务相关，Claude 会选最相关的一个。如果分不清，Claude 会问你。</p>
+<blockquote><strong>核心建议</strong>：<br><br>description 写得越具体，自动触发越准确。"Write unit tests using Jest with snapshot testing" 比 "Write tests" 好10倍。</blockquote>
+<hr>
+<h2 id="section-06-skills-的三级渐进式加载">§06 Skills 的三级渐进式加载</h2>
+<h3 id="06-1-为什么要渐进式加载">06.1 为什么要渐进式加载</h3>
+<p>Claude 的上下文窗口有限。如果所有 Skill 的全部内容都加载进来，上下文早就爆了。</p>
+<p>三级加载解决了这个问题：<strong>只加载需要的，跳过不需要的。</strong></p>
+<h3 id="06-2-level-1-元数据层">06.2 Level 1：元数据层</h3>
+<pre><code class="language-text">始终在上下文中</code></pre>
+<p>每个 Skill 的 name 和 description 始终在 Claude 的上下文里。这一层极小，几乎不占空间。</p>
+<p>Claude 用这一层做快速判断："这个 Skill 跟当前任务有关吗？"</p>
+<h3 id="06-3-level-2-skill-md-正文">06.3 Level 2：SKILL.md 正文</h3>
+<pre><code class="language-text">触发时加载</code></pre>
+<p>当 Claude 判断相关，或者用户直接输入 <code>/skill-name</code> 时，SKILL.md 的正文被加载到上下文中。</p>
+<p>这一层包含 Skill 的核心指令：工作流程、规则、模板。</p>
+<h3 id="06-4-level-3-脚本和参考文件">06.4 Level 3：脚本和参考文件</h3>
+<pre><code class="language-text">按需加载</code></pre>
+<p>SKILL.md 里可以引用脚本和参考文件。只有当 Claude 执行到需要它们的步骤时，才会加载。</p>
+<pre><code class="language-markdown">## 参考文件
+
+在写测试前，先读取 `references/test-patterns.md` 了解项目的测试模式。</code></pre>
+<p>Claude 读到这句话时，才会去加载 <code>references/test-patterns.md</code>。</p>
+<h3 id="06-5-加载流程图">06.5 加载流程图</h3>
+<pre><code class="language-text">用户输入
+    ↓
+Claude 读取所有 Skill 的 description（Level 1）
+    ↓
+判断哪个 Skill 最相关
+    ↓
+加载该 Skill 的 SKILL.md（Level 2）
+    ↓
+按需加载脚本和参考文件（Level 3）
+    ↓
+执行任务</code></pre>
+<h3 id="06-6-上下文管理策略">06.6 上下文管理策略</h3>
+<div class="table-wrapper"><table>
+<tr><th>策略</th><th>做法</th><th>效果</th></tr>
+<tr><td>description 精简</td><td>一句话说清楚</td><td>Level 1 极小</td></tr>
+<tr><td>SKILL.md 聚焦</td><td>只放核心指令</td><td>Level 2 适中</td></tr>
+<tr><td>参考文件分离</td><td>模式和示例放 references/</td><td>Level 3 按需</td></tr>
+<tr><td>脚本外部化</td><td>复杂逻辑用脚本</td><td>不占上下文</td></tr>
+</table></div>
+<blockquote><strong>滔哥的经验</strong>：<br><br>我见过有人把整个 API 文档塞进 SKILL.md。结果每次触发 Skill，上下文就占了一大半。正确做法是把文档放到 references/ 目录，SKILL.md 里只写"需要时读取 references/api-docs.md"。加载时机由 Claude 决定。</blockquote>
+<hr>
+<h2 id="section-07-常用内置-skills-详解">§07 常用内置 Skills 详解</h2>
+<h3 id="07-1-什么是内置-skills">07.1 什么是内置 Skills</h3>
+<p>Claude Code 本身带了一些基础能力。这些不算严格意义上的 Skills（没有 SKILL.md 文件），但它们的行为模式跟 Skills 一样：触发 → 加载指令 → 执行。</p>
+<h3 id="07-2-commit">07.2 /commit</h3>
+<p><strong>用途</strong>：智能提交代码</p>
+<p><strong>工作流</strong>：</p>
+<ol>
+<li>分析当前改动（git diff）</li>
+<li>自动生成规范的 commit message</li>
+<li>执行 git commit</li>
+</ol>
+<p><strong>跟直接 git commit 的区别</strong>：它会分析你的改动，生成有意义的 commit message。不是"fix bug"这种废话，而是"fix: resolve race condition in user auth middleware"这种有用的信息。</p>
+<h3 id="07-3-review">07.3 /review</h3>
+<p><strong>用途</strong>：代码审查</p>
+<p><strong>工作流</strong>：</p>
+<ol>
+<li>读取代码文件</li>
+<li>检查代码风格、潜在 bug、安全问题</li>
+<li>给出具体的改进建议</li>
+</ol>
+<p><strong>适合场景</strong>：提交前自查、PR 前检查。</p>
+<h3 id="07-4-help">07.4 /help</h3>
+<p><strong>用途</strong>：获取帮助</p>
+<p><strong>工作流</strong>：</p>
+<ol>
+<li>列出所有可用的 Skills</li>
+<li>显示每个 Skill 的简短说明</li>
+<li>给出使用建议</li>
+</ol>
+<h3 id="07-5-clear">07.5 /clear</h3>
+<p><strong>用途</strong>：清除上下文</p>
+<p><strong>工作流</strong>：</p>
+<ol>
+<li>清除当前对话的上下文</li>
+<li>保留项目配置</li>
+</ol>
+<p><strong>什么时候用</strong>：上下文太长，Claude 开始"忘事"的时候。</p>
+<blockquote><strong>核心建议</strong>：<br><br>内置 Skills 是起点，不是终点。用它们理解 Skills 的工作方式，然后开始自己写。自己写的 Skill 才是最适合你的。</blockquote>
+<hr>
+<h2 id="section-08-社区-skills-生态">§08 社区 Skills 生态</h2>
+<h3 id="08-1-生态概览">08.1 生态概览</h3>
+<p>2026年5月，Claude Code Skills 生态已经相当成熟：</p>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>数据</th></tr>
+<tr><td>社区 Skills 数量</td><td>658+</td></tr>
+<tr><td>热门仓库 Stars</td><td>13,600+（alirezarezvani/claude-skills）</td></tr>
+<tr><td>覆盖领域</td><td>开发、设计、运维、文档、测试</td></tr>
+</table></div>
+<h3 id="08-2-主要来源">08.2 主要来源</h3>
+<div class="table-wrapper"><table>
+<tr><th>来源</th><th>说明</th><th>Stars</th></tr>
+<tr><td>alirezarezvani/claude-skills</td><td>235个生产级 Skills</td><td>13.6K</td></tr>
+<tr><td>nuwa-skill</td><td>思维蒸馏 Skill</td><td>17K</td></tr>
+<tr><td>huashu-design</td><td>HTML 原生设计 Skill</td><td>11.7K</td></tr>
+<tr><td>npm skills 包</td><td>分散的独立 Skills</td><td>-</td></tr>
+<tr><td>个人仓库</td><td>开发者自用 Skills</td><td>-</td></tr>
+</table></div>
+<h3 id="08-3-skills-分类">08.3 Skills 分类</h3>
+<p>按用途分类：</p>
+<div class="table-wrapper"><table>
+<tr><th>类别</th><th>数量</th><th>典型 Skill</th></tr>
+<tr><td>代码质量</td><td>50+</td><td>code-reviewer, linter, formatter</td></tr>
+<tr><td>测试</td><td>40+</td><td>tdd, unit-test, e2e-test</td></tr>
+<tr><td>设计</td><td>30+</td><td>huashu-design, ui-builder</td></tr>
+<tr><td>文档</td><td>30+</td><td>doc-generator, readme-writer</td></tr>
+<tr><td>部署</td><td>20+</td><td>deploy, ci-cd, docker</td></tr>
+<tr><td>效率</td><td>60+</td><td>commit, refactor, optimize</td></tr>
+<tr><td>AI 增强</td><td>40+</td><td>nuwa-skill, prompt-optimizer</td></tr>
+</table></div>
+<h3 id="08-4-怎么选择社区-skills">08.4 怎么选择社区 Skills</h3>
+<p>选 Skill 的三个标准：</p>
+<ol>
+<li><strong>Stars 数</strong>：超过 100 的一般靠谱</li>
+<li><strong>最近更新</strong>：3个月内有更新的</li>
+<li><strong>SKILL.md 质量</strong>：结构清晰、说明具体</li>
+</ol>
+<h3 id="08-5-社区-skills-的局限">08.5 社区 Skills 的局限</h3>
+<p>社区 Skills 有几个问题：</p>
+<ul>
+<li><strong>质量参差不齐</strong>：有些是半成品</li>
+<li><strong>不一定适合你的项目</strong>：通用 vs 项目特定</li>
+<li><strong>可能过时</strong>：Claude Code 更新后，旧 Skill 可能不兼容</li>
+</ul>
+<blockquote><strong>滔哥的经验</strong>：<br><br>我装过30多个社区 Skills。真正长期在用的不到5个。原因很简单：社区 Skills 是通用的，我的项目是特定的。最好的策略是：用社区 Skills 学习怎么写，然后自己写适合自己的。</blockquote>
+<hr>
+<h2 id="part-3-创建-skills">Part 3: 创建 Skills</h2>
+<p>从使用者变成创造者。读完这部分，你能写出自己的 Skills，并发布到社区。</p>
+<hr>
+<h2 id="section-09-skill-md-的编写规范">§09 SKILL.md 的编写规范</h2>
+<h3 id="09-1-基本结构">09.1 基本结构</h3>
+<pre><code class="language-markdown">---
+name: my-skill
+description: 一句话说明这个 Skill 做什么
+---
+
+# Skill 标题
+
+## 什么时候用
+
+描述触发场景。
+
+## 工作流程
+
+1. 第一步做什么
+2. 第二步做什么
+3. 第三步做什么
+
+## 规则
+
+- 规则一
+- 规则二
+
+## 参考
+
+需要读取的文件或资源。</code></pre>
+<h3 id="09-2-yaml-前置元数据">09.2 YAML 前置元数据</h3>
+<pre><code class="language-yaml">---
+name: tdd                    # Skill 名称（必填）
+description: &gt;                # 触发描述（必填）
+  Write tests first, then code.
+  Use Jest for unit tests.
+model: sonnet                 # 指定模型（可选）
+user-invocable: true          # 用户可调用（可选，默认 true）
+---</code></pre>
+<p><strong>name</strong>：Skill 的唯一标识。用户通过 <code>/name</code> 触发。用小写字母和连字符。</p>
+<p><strong>description</strong>：最关键的一句话。Claude 用它判断什么时候触发。写得越具体越好。</p>
+<p><strong>model</strong>：可以指定 Skill 使用哪个模型。haiku 最快最便宜，opus 最强最贵。</p>
+<h3 id="09-3-正文编写技巧">09.3 正文编写技巧</h3>
+<p><strong>技巧一：用指令式语气</strong></p>
+<pre><code class="language-markdown"># 好
+读取代码文件，分析函数签名，生成测试用例。
+
+# 不好
+这个 Skill 会读取代码文件，然后分析函数签名，最后生成测试用例。</code></pre>
+<p>Claude 理解指令比理解描述更准确。</p>
+<p><strong>技巧二：用编号列表定义流程</strong></p>
+<pre><code class="language-markdown">1. 读取目标文件
+2. 分析导出的函数
+3. 为每个函数生成测试
+4. 运行测试确认通过</code></pre>
+<p>编号列表告诉 Claude："按这个顺序执行。"</p>
+<p><strong>技巧三：用规则约束行为</strong></p>
+<pre><code class="language-markdown">## 规则
+
+- 测试文件放在 `__tests__/` 目录
+- 测试函数名用 `should` 开头
+- 不要 mock 数据库</code></pre>
+<p>规则比建议更有约束力。Claude 会更严格地遵守。</p>
+<p><strong>技巧四：用示例说明期望</strong></p>
+<pre><code class="language-markdown">## 示例
+
+输入：`src/utils.ts` 包含 `add(a, b)` 函数
+
+期望输出：</code></pre>
+<p>// __tests__/utils.test.ts</p>
+<p>describe('add', () => {</p>
+<p>  it('should add two numbers', () => {</p>
+<p>    expect(add(1, 2)).toBe(3);</p>
+<p>  });</p>
+<p>});</p>
+<pre><code class="language-text">
+示例比描述更直观。Claude 看到示例后，产出质量明显更高。
+
+### 09.4 description 的写法
+</code></pre>
+<h1 id="好的-description">好的 description</h1>
+<p>description: ></p>
+<p>  Generate comprehensive unit tests for TypeScript functions.</p>
+<p>  Uses Jest framework with snapshot testing support.</p>
+<h1 id="不好的-description">不好的 description</h1>
+<p>description: "A testing tool"</p>
+<pre><code class="language-text">
+好的 description 包含：
+- 做什么（Generate unit tests）
+- 技术栈（TypeScript, Jest）
+- 特色（snapshot testing support）
+
+### 09.5 常见错误
+
+| 错误 | 问题 | 正确做法 |
+|------|------|---------|
+| description 太短 | Claude 不知道什么时候触发 | 写清楚做什么、怎么做 |
+| 正文太长 | 浪费上下文 | 核心指令放正文，细节放 references/ |
+| 没有示例 | Claude 理解偏差 | 给一个输入输出示例 |
+| 没有规则 | 行为不可控 | 用规则约束关键行为 |
+
+&gt; **核心建议**：
+&gt;
+&gt; 写 SKILL.md 的时候，想象你在带一个新同事。你会怎么告诉他做这件事？用同样的方式写。不要假设 Claude "应该知道"——它不知道，除非你写下来。
+
+---
+
+## §10 前置脚本（Preamble）
+
+### 10.1 什么是 Preamble
+
+Preamble 是 Skill 触发时**最先运行**的脚本。它在 Claude 开始执行任务之前运行，用来收集信息、设置环境。
+</code></pre>
+<p>用户触发 Skill → 运行 Preamble → Claude 读取输出 → 执行任务</p>
+<pre><code class="language-text">
+### 10.2 Preamble 的用途
+
+| 用途 | 示例 |
+|------|------|
+| 收集环境信息 | 当前分支、Git 状态、文件列表 |
+| 检查依赖 | 工具是否安装、配置是否正确 |
+| 设置变量 | 定义路径、版本号等 |
+| 预处理 | 生成临时文件、清理缓存 |
+
+### 10.3 怎么写 Preamble
+
+在 SKILL.md 中引用脚本：
+</code></pre>
+<h2 id="preamble">Preamble</h2>
+<p>Run this script before starting:</p>
+<pre><code class="language-bash">#!/bin/bash
+_BRANCH=$(git branch --show-current)
+_STATUS=$(git status --short)
+echo "Branch: $_BRANCH"
+echo "Status: $_STATUS"</code></pre>
+<pre><code class="language-text">
+Claude 执行 Skill 时，会先运行这个脚本，读取输出，然后开始任务。
+
+### 10.4 实际示例
+
+一个代码审查 Skill 的 Preamble：
+</code></pre>
+<p>#!/bin/bash</p>
+<h1 id="收集项目信息">收集项目信息</h1>
+<p>echo "PROJECT: $(basename $(pwd))"</p>
+<p>echo "BRANCH: $(git branch --show-current 2>/dev/null || echo 'not a git repo')"</p>
+<p>echo "CHANGED_FILES: $(git diff --name-only HEAD 2>/dev/null | wc -l | tr -d ' ')"</p>
+<p>echo "LANG: $(cat package.json 2>/dev/null | grep -o '"typescript"' | head -1 || echo 'unknown')"</p>
+<pre><code class="language-text">
+输出类似：
+</code></pre>
+<p>PROJECT: my-app</p>
+<p>BRANCH: feature/auth</p>
+<p>CHANGED_FILES: 5</p>
+<p>LANG: typescript</p>
+<pre><code class="language-text">
+Claude 读取这些信息后，审查时就知道：这是一个 TypeScript 项目，当前在 feature/auth 分支，有5个文件改动。
+
+### 10.5 Preamble 的注意事项
+
+- **快速**：Preamble 会阻塞 Skill 的启动。太慢会影响体验。
+- **安静**：不要输出太多。只输出 Claude 需要的信息。
+- **容错**：用 `|| echo 'default'` 处理命令失败的情况。
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 我写过一个 Preamble 太重了——跑了10秒。每次触发 Skill 都要等。后来精简到只收集必要信息，200ms 就跑完了。记住：Preamble 是"前菜"，不是"正餐"。快、准、轻。
+
+---
+
+## §11 参考文件（References）
+
+### 11.1 为什么需要 References
+
+SKILL.md 的正文是核心指令。但有时候，Claude 需要更多的上下文：
+
+- 项目的代码规范
+- API 文档
+- 设计模式示例
+- 配置模板
+
+这些内容不适合放在 SKILL.md 里（太大），但 Claude 需要时得能看到。
+
+References 解决这个问题。
+
+### 11.2 References 的结构
+</code></pre>
+<p>my-skill/</p>
+<p>├── SKILL.md</p>
+<p>└── references/</p>
+<p>    ├── code-style.md        # 代码风格指南</p>
+<p>    ├── api-docs.md          # API 文档</p>
+<p>    ├── examples/            # 示例目录</p>
+<p>    │   ├── good.ts</p>
+<p>    │   └── bad.ts</p>
+<p>    └── templates/           # 模板目录</p>
+<p>        └── component.tsx</p>
+<pre><code class="language-text">
+### 11.3 在 SKILL.md 中引用
+</code></pre>
+<h2 id="参考文件">参考文件</h2>
+<p>在写代码前，先读取以下参考文件：</p>
+<ol>
+<li><code>references/code-style.md</code> — 了解项目的代码风格</li>
+<li><code>references/api-docs.md</code> — 了解可用的 API</li>
+<li><code>references/examples/good.ts</code> — 看一个好例子</li>
+</ol>
+<p>根据这些参考文件来写代码。</p>
+<pre><code class="language-text">
+Claude 读到这段话时，才会去加载这些文件。不读到就不会加载——这就是 Level 3 按需加载。
+
+### 11.4 什么时候用 References
+
+| 内容 | 放 SKILL.md | 放 References |
+|------|------------|---------------|
+| 核心指令 | ✅ | ❌ |
+| 工作流程 | ✅ | ❌ |
+| 代码规范 | ❌ | ✅ |
+| API 文档 | ❌ | ✅ |
+| 示例代码 | ❌ | ✅ |
+| 配置模板 | ❌ | ✅ |
+
+### 11.5 References 的大小管理
+
+References 文件不要太大。建议：
+
+- 单个文件 &lt; 500 行
+- 总量 &lt; 2000 行
+- 用目录分组，不要平铺
+
+&gt; **核心建议**：
+&gt;
+&gt; References 是 Skill 的"参考书架"。SKILL.md 告诉 Claude "怎么做"，References 告诉 Claude "参考什么"。分开管理，按需加载。
+
+---
+
+## §12 打包发布
+
+### 12.1 什么时候发布
+
+你的 Skill 满足以下条件时，考虑发布：
+
+1. 你自己用了至少一周
+2. 没有严重的 bug
+3. 文档完整（SKILL.md 写清楚了）
+4. 对其他人也有用
+
+### 12.2 发布到 npm
+</code></pre>
+<h1 id="初始化-package-json">初始化 package.json</h1>
+<p>npm init -y</p>
+<h1 id="设置-package-name">设置 package name</h1>
+<h1 id="package-json-里加上">package.json 里加上：</h1>
+<h1 id="name-yourname-skill-name">"name": "@yourname/skill-name"</h1>
+<h1 id="keywords-claude-code-skill">"keywords": ["claude-code-skill"]</h1>
+<h1 id="发布">发布</h1>
+<p>npm publish</p>
+<pre><code class="language-text">
+发布后，其他人可以这样安装：
+</code></pre>
+<p>npx skills add @yourname/skill-name</p>
+<pre><code class="language-text">
+### 12.3 发布到 GitHub
+</code></pre>
+<h1 id="创建仓库">创建仓库</h1>
+<p>gh repo create my-skill --public</p>
+<h1 id="推送代码">推送代码</h1>
+<p>git init</p>
+<p>git add .</p>
+<p>git commit -m "feat: initial release"</p>
+<p>git push</p>
+<pre><code class="language-text">
+其他人可以这样安装：
+</code></pre>
+<p>npx skills add yourname/my-skill</p>
+<pre><code class="language-text">
+### 12.4 _metadata.json
+
+发布前，建议加上元数据文件：
+</code></pre>
+<p>{</p>
+<p>  "version": "1.0.0",</p>
+<p>  "author": "yourname",</p>
+<p>  "license": "MIT",</p>
+<p>  "repository": "https://github.com/yourname/my-skill",</p>
+<p>  "description": "A skill for..."</p>
+<p>}</p>
+<pre><code class="language-text">
+### 12.5 发布清单
+
+- [ ] SKILL.md 完整（name、description、正文）
+- [ ] 测试过至少一周
+- [ ] README.md 说明安装和使用
+- [ ] _metadata.json 包含版本信息
+- [ ] 没有硬编码的路径或密钥
+- [ ] 脚本有错误处理
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 我第一个发布的 Skill，README 写了3行。结果没人用。后来加了安装说明、使用示例、截图，才有人开始装。文档是 Skill 的门面。没有好文档，再好的 Skill 也没人知道。
+
+---
+
+## Part 4: 进阶技巧
+
+掌握这些技巧，你能用 Skills 做更复杂的事：条件触发、多 Skills 协作、性能优化。
+
+---
+
+## §13 条件触发和上下文感知
+
+### 13.1 Skills 怎么感知上下文
+
+Claude 在触发 Skill 之前，已经有了当前对话的上下文：你在做什么项目、改了什么文件、之前说了什么。
+
+Skill 可以利用这些上下文。
+
+### 13.2 在 SKILL.md 中写条件逻辑
+</code></pre>
+<h2 id="工作流程">工作流程</h2>
+<ol>
+<li>检查当前项目类型</li>
+</ol>
+<p>   - 如果是 React 项目：使用 React Testing Library</p>
+<p>   - 如果是 Vue 项目：使用 Vue Test Utils</p>
+<p>   - 如果是 Node 项目：使用 Jest 直接测试</p>
+<ol>
+<li>检查测试框架</li>
+</ol>
+<p>   - 如果已有 Jest 配置：使用 Jest</p>
+<p>   - 如果已有 Vitest 配置：使用 Vitest</p>
+<p>   - 如果没有测试框架：推荐 Jest</p>
+<pre><code class="language-text">
+Claude 会根据项目的实际情况，选择对应的路径。
+
+### 13.3 利用 Preamble 提供上下文
+</code></pre>
+<p>#!/bin/bash</p>
+<h1 id="检测项目类型">检测项目类型</h1>
+<p>if [ -f "package.json" ]; then</p>
+<p>  if grep -q "react" package.json; then</p>
+<p>    echo "PROJECT_TYPE: react"</p>
+<p>  elif grep -q "vue" package.json; then</p>
+<p>    echo "PROJECT_TYPE: vue"</p>
+<p>  else</p>
+<p>    echo "PROJECT_TYPE: node"</p>
+<p>  fi</p>
+<p>fi</p>
+<h1 id="检测测试框架">检测测试框架</h1>
+<p>if [ -f "jest.config.js" ] || [ -f "jest.config.ts" ]; then</p>
+<p>  echo "TEST_FRAMEWORK: jest"</p>
+<p>elif [ -f "vitest.config.ts" ]; then</p>
+<p>  echo "TEST_FRAMEWORK: vitest"</p>
+<p>else</p>
+<p>  echo "TEST_FRAMEWORK: none"</p>
+<p>fi</p>
+<pre><code class="language-text">
+### 13.4 条件触发的最佳实践
+
+| 场景 | 做法 |
+|------|------|
+| 项目类型不同 | 用 Preamble 检测，在 SKILL.md 写分支 |
+| 文件类型不同 | 用 Claude 的上下文判断 |
+| 用户偏好不同 | 用 CLAUDE.md 定义偏好 |
+
+&gt; **核心建议**：
+&gt;
+&gt; 不要写一个大而全的 Skill。写多个小 Skill，每个处理一个场景。Claude 会自动选择最相关的那个。
+
+---
+
+## §14 多 Skills 协作
+
+### 14.1 串联执行
+
+一个任务可能需要多个 Skills 依次完成。
+</code></pre>
+<p>/review → 发现问题 → /fix → 修复代码 → /test → 跑测试</p>
+<pre><code class="language-text">
+你可以手动串联，也可以写一个"编排 Skill"。
+
+### 14.2 编排 Skill
+</code></pre>
+<hr>
+<p>name: full-check</p>
+<p>description: Run full code quality check: review, fix, test</p>
+<hr>
+<h1 id="full-check">Full Check</h1>
+<p>执行完整的代码质量检查流程：</p>
+<ol>
+<li>运行 code-reviewer Skill 审查代码</li>
+<li>根据审查结果修复问题</li>
+<li>运行 test Skill 确认测试通过</li>
+<li>生成质量报告</li>
+</ol>
+<pre><code class="language-text">
+### 14.3 并行执行
+
+有些 Skills 可以并行：
+</code></pre>
+<p>同时运行：</p>
+<ul>
+<li>/lint 检查代码风格</li>
+<li>/type-check 检查类型</li>
+<li>/test 跑测试</li>
+</ul>
+<pre><code class="language-text">
+Claude Code 支持并行执行多个独立任务。
+
+### 14.4 Skills 之间的通信
+
+Skills 之间不直接通信。它们通过以下方式共享信息：
+
+- **文件**：一个 Skill 写文件，另一个读文件
+- **Git**：一个 Skill 提交代码，另一个读取 diff
+- **上下文**：都在同一个对话里，共享上下文
+
+### 14.5 团队工作流示例
+</code></pre>
+<p>开发者日常：</p>
+<ol>
+<li>写代码</li>
+<li>/tdd — 先写测试</li>
+<li>/commit — 智能提交</li>
+<li>/review — 自我审查</li>
+<li>/ship — 发布</li>
+</ol>
+<p>设计师日常：</p>
+<ol>
+<li>/huashu-design — 生成设计</li>
+<li>/review — 审查设计</li>
+<li>/commit — 提交设计文件</li>
+</ol>
+<p>运维日常：</p>
+<ol>
+<li>/investigate — 排查问题</li>
+<li>/fix — 修复</li>
+<li>/deploy — 部署</li>
+<li>/canary — 监控</li>
+</ol>
+<pre><code class="language-text">
+&gt; **滔哥的经验**：
+&gt;
+&gt; 多 Skills 协作的关键是"接口清晰"。每个 Skill 的输入输出要明确。我通常会在 SKILL.md 里写清楚："这个 Skill 读取什么、输出什么、格式是什么。"这样其他 Skill 就能无缝衔接。
+
+---
+
+## §15 Skills 的性能优化
+
+### 15.1 上下文是稀缺资源
+
+Claude 的上下文窗口有限。每个 Skill 的 SKILL.md 加载进来，都会占用上下文。
+
+如果一个 Skill 的 SKILL.md 有 2000 行，每次触发就占掉大量上下文。留给实际任务的空间就少了。
+
+### 15.2 优化策略
+
+**策略一：精简 SKILL.md**
+</code></pre>
+<p>核心指令 → SKILL.md</p>
+<p>参考内容 → references/</p>
+<p>示例代码 → references/examples/</p>
+<p>配置模板 → assets/</p>
+<pre><code class="language-text">
+SKILL.md 只放"怎么做"，不放"参考什么"。
+
+**策略二：用 Preamble 预处理**
+</code></pre>
+<h1 id="不要在-skill-md-里写-先检查-package-json">不要在 SKILL.md 里写"先检查 package.json"</h1>
+<h1 id="而是在-preamble-里检查-输出结果">而是在 Preamble 里检查，输出结果</h1>
+<p>cat package.json | grep -o '"react"' | head -1</p>
+<pre><code class="language-text">
+Preamble 的输出直接进入上下文，比在 SKILL.md 里写"请先检查"更高效。
+
+**策略三：合理使用 model**
+</code></pre>
+<p>model: haiku  # 简单任务用 haiku</p>
+<p>model: sonnet # 中等任务用 sonnet</p>
+<p>model: opus   # 复杂任务用 opus</p>
+<pre><code class="language-text">
+简单任务不需要最强的模型。用 haiku 快 3 倍，便宜 10 倍。
+
+**策略四：按需加载 Level 3**
+</code></pre>
+<p>只有当用户要求生成报告时，才读取 <code>references/report-template.md</code>。</p>
+<pre><code class="language-text">
+不要在 SKILL.md 开头就让 Claude 加载所有参考文件。
+
+### 15.3 监控上下文使用
+
+在对话中输入 `/cost`，查看当前上下文使用情况。如果发现上下文快满了：
+
+1. `/clear` 清除上下文
+2. 检查哪些 Skill 加载了太多内容
+3. 优化 SKILL.md 和 References
+
+&gt; **核心建议**：
+&gt;
+&gt; 性能优化的第一步是测量。先看看你的 Skill 占了多少上下文，再决定怎么优化。不要盲目精简——有些内容是必须的。
+
+---
+
+## §16 Skills 和 Agent、MCP 的配合
+
+### 16.1 三种扩展方式的关系
+</code></pre>
+<p>Skills：怎么做事（方法论）</p>
+<p>Agent：谁来做（执行者）</p>
+<p>MCP：用什么工具（外部能力）</p>
+<pre><code class="language-text">
+它们是三层：
+</code></pre>
+<p>Agent（任务层）</p>
+<p>    ↓ 调用</p>
+<p>Skills（方法层）</p>
+<p>    ↓ 使用</p>
+<p>MCP（工具层）</p>
+<pre><code class="language-text">
+### 16.2 Skills + Agent
+
+Agent 可以调用 Skills。一个"代码审查 Agent"可以：
+
+1. 调用 /review Skill 审查代码
+2. 调用 /fix Skill 修复问题
+3. 调用 /test Skill 跑测试
+4. 生成报告
+
+### 16.3 Skills + MCP
+
+Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
+
+1. 用 GitHub MCP 创建 PR
+2. 用 Vercel MCP 触发部署
+3. 用 Slack MCP 发送通知
+
+### 16.4 完整的工作流示例
+</code></pre>
+<p>用户：发布新版本</p>
+<p>Agent（编排）</p>
+<p>    ├── /commit Skill（提交代码）</p>
+<p>    ├── /review Skill（审查代码）</p>
+<p>    ├── GitHub MCP（创建 PR）</p>
+<p>    ├── /test Skill（跑测试）</p>
+<p>    ├── Vercel MCP（部署）</p>
+<p>    └── Slack MCP（通知团队）</p>
+<pre><code class="language-text">
+### 16.5 配置建议
+
+| 需求 | 方案 |
+|------|------|
+| 单一任务 | 用 Skill |
+| 多步骤任务 | 用 Agent + Skills |
+| 需要外部能力 | Skill + MCP |
+| 完整流程 | Agent + Skills + MCP |
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 刚开始我只用 Skills。后来发现有些任务太复杂，一个 Skill 搞不定。就开始写 Agent 来编排多个 Skills。再后来发现有些能力 Claude 自己没有（比如发 Slack 消息），就加上 MCP。三层叠加，才能覆盖真实的工作场景。
+
+---
+
+## Part 5: Skills 生态全集
+
+精选社区最实用的 Skills，按类别组织。读完这部分，你知道每个领域有什么好用的 Skill。
+
+---
+
+## §17 开发类 Skills
+
+### 17.1 代码质量
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| code-reviewer | alirezarezvani | 代码审查 | ★★★★★ |
+| linter | 社区 | 代码风格检查 | ★★★★ |
+| formatter | 社区 | 代码格式化 | ★★★★ |
+| refactor | 社区 | 代码重构 | ★★★★ |
+
+**code-reviewer** 是最常用的开发类 Skill。它不只是检查语法错误，还会分析代码结构、命名规范、潜在的性能问题。
+
+### 17.2 测试
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| tdd | 社区 | 测试驱动开发 | ★★★★★ |
+| unit-test | 社区 | 单元测试生成 | ★★★★ |
+| e2e-test | 社区 | 端到端测试 | ★★★ |
+| snapshot | 社区 | 快照测试 | ★★★ |
+
+**tdd** Skill 实现了真正的测试驱动开发流程：先写测试，再写代码，最后确认测试通过。
+
+### 17.3 Git 和版本控制
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| commit | 内置 | 智能提交 | ★★★★★ |
+| ship | gstack | 完整发布流程 | ★★★★★ |
+| branch | 社区 | 分支管理 | ★★★★ |
+
+**commit** 是每天都在用的 Skill。它分析你的改动，生成规范的 commit message。
+
+### 17.4 开发类 Skill 使用建议
+</code></pre>
+<p>日常开发：</p>
+<ol>
+<li>/tdd — 先写测试</li>
+<li>写代码</li>
+<li>/commit — 智能提交</li>
+<li>/review — 自查</li>
+</ol>
+<p>发布前：</p>
+<ol>
+<li>/review — 完整审查</li>
+<li>/test — 跑测试</li>
+<li>/ship — 发布</li>
+</ol>
+<pre><code class="language-text">
+&gt; **核心建议**：
+&gt;
+&gt; 开发类 Skills 不需要装太多。一个代码审查、一个测试、一个提交，就够了。装太多反而会让 Claude 在选择时犹豫。
+
+---
+
+## §18 设计类 Skills
+
+### 18.1 设计生成
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| huashu-design | alchaincyf | HTML 原生设计 | ★★★★★ |
+| ui-builder | 社区 | UI 组件生成 | ★★★★ |
+| figma-export | 社区 | Figma 导出 | ★★★ |
+
+**huashu-design** 是设计类 Skill 中最独特的一个。它不是生成设计稿，而是直接生成 HTML。你告诉它想要什么设计，它输出可用的网页代码。
+
+### 18.2 设计审查
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| design-review | gstack | 设计审查 | ★★★★★ |
+| accessibility | 社区 | 可访问性检查 | ★★★★ |
+
+### 18.3 设计类 Skill 的工作流
+</code></pre>
+<ol>
+<li>/huashu-design — 生成设计</li>
+<li>浏览器预览</li>
+<li>/design-review — 审查设计</li>
+<li>迭代修改</li>
+<li>/commit — 提交</li>
+</ol>
+<pre><code class="language-text">
+&gt; **滔哥的经验**：
+&gt;
+&gt; huashu-design 改变了我的设计工作流。以前用 Figma 画设计稿，再手动写 HTML。现在直接用 Skill 生成 HTML，省掉了中间环节。设计到代码的时间从2天缩短到2小时。
+
+---
+
+## §19 运维类 Skills
+
+### 19.1 部署
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| ship | gstack | 完整发布流程 | ★★★★★ |
+| deploy | 社区 | 部署脚本 | ★★★★ |
+| docker | 社区 | Docker 构建 | ★★★★ |
+| ci-cd | 社区 | CI/CD 配置 | ★★★ |
+
+**ship** 是最完整的发布 Skill。它包含：代码审查 → 测试 → 提交 → 创建 PR → 通知团队。
+
+### 19.2 监控和排查
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| investigate | gstack | 问题排查 | ★★★★★ |
+| canary | gstack | 部署后监控 | ★★★★ |
+| log-analyzer | 社区 | 日志分析 | ★★★ |
+
+**investigate** 是排查问题的利器。输入错误信息，它会系统性地分析原因、定位代码、提出修复方案。
+
+### 19.3 安全
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| cso | gstack | 安全审计 | ★★★★★ |
+| dependency-check | 社区 | 依赖安全检查 | ★★★★ |
+| secrets-scanner | 社区 | 密钥扫描 | ★★★★ |
+
+### 19.4 运维类 Skill 使用建议
+</code></pre>
+<p>发布流程：</p>
+<ol>
+<li>/ship — 完整发布</li>
+<li>/canary — 监控部署</li>
+<li>/investigate — 排查问题（如有）</li>
+</ol>
+<p>安全流程：</p>
+<ol>
+<li>/cso — 安全审计</li>
+<li>/dependency-check — 检查依赖</li>
+<li>/secrets-scanner — 扫描密钥</li>
+</ol>
+<pre><code class="language-text">
+&gt; **核心建议**：
+&gt;
+&gt; 运维类 Skills 是"平时不用，用时救命"。建议提前装好 /investigate 和 /cso。出问题时再装就来不及了。
+
+---
+
+## §20 效率类 Skills
+
+### 20.1 文档生成
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| doc-generator | 社区 | 文档生成 | ★★★★ |
+| readme-writer | 社区 | README 生成 | ★★★★ |
+| changelog | 社区 | 变更日志 | ★★★ |
+| api-doc | 社区 | API 文档 | ★★★★ |
+
+### 20.2 代码转换
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| migrate | 社区 | 框架迁移 | ★★★★ |
+| upgrade | 社区 | 版本升级 | ★★★★ |
+| convert | 社区 | 语言转换 | ★★★ |
+
+### 20.3 思维增强
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| nuwa-skill | alchaincyf | 思维蒸馏 | ★★★★★ |
+| brainstorm | 社区 | 头脑风暴 | ★★★★ |
+| decision | 社区 | 决策分析 | ★★★ |
+
+**nuwa-skill** 是最特别的效率类 Skill。它不是帮你做事，而是帮你思考。输入一个人的思维方式，它能生成一个模拟那个思维方式的 Skill。
+
+### 20.4 效率类 Skill 使用建议
+</code></pre>
+<p>项目启动：</p>
+<ol>
+<li>/doc-generator — 生成文档</li>
+<li>/readme-writer — 写 README</li>
+</ol>
+<p>日常开发：</p>
+<ol>
+<li>/api-doc — 生成 API 文档</li>
+<li>/changelog — 更新变更日志</li>
+</ol>
+<p>思考辅助：</p>
+<ol>
+<li>/nuwa-skill — 思维蒸馏</li>
+<li>/brainstorm — 头脑风暴</li>
+</ol>
+<pre><code class="language-text">
+&gt; **滔哥的经验**：
+&gt;
+&gt; nuwa-skill 让我重新理解了 Skills 的边界。它不是"帮你做事"的工具，是"帮你思考"的工具。你可以把任何人的思维方式蒸馏成一个 Skill，然后在需要时"召唤"那个思维方式来帮你分析问题。这比直接问 Claude 更有针对性。
+
+---
+
+## Part 6: 实战场景
+
+真实项目中的 Skills 用法。这部分综合运用前面学到的所有能力。
+
+---
+
+## §21 场景一：用 Skills 搭建完整开发流程
+
+### 21.1 需求
+
+一个5人的前端团队，想用 Skills 标准化开发流程。每个人写代码的习惯不同，提交质量参差不齐，代码审查靠人肉。
+
+### 21.2 Skill 清单
+</code></pre>
+<p>.claude/skills/</p>
+<p>├── commit/           # 智能提交</p>
+<p>│   └── SKILL.md</p>
+<p>├── review/           # 代码审查</p>
+<p>│   └── SKILL.md</p>
+<p>├── tdd/              # 测试驱动</p>
+<p>│   └── SKILL.md</p>
+<p>├── ship/             # 发布流程</p>
+<p>│   └── SKILL.md</p>
+<p>└── investigate/      # 问题排查</p>
+<p>    └── SKILL.md</p>
+<pre><code class="language-text">
+### 21.3 每个 Skill 的核心逻辑
+
+**commit Skill**：</code></pre>
+<ol>
+<li>分析 git diff</li>
+<li>判断改动类型（feat/fix/refactor/docs）</li>
+<li>生成规范的 commit message</li>
+<li>执行提交</li>
+</ol>
+<pre><code class="language-text">
+**review Skill**：</code></pre>
+<ol>
+<li>读取改动文件</li>
+<li>检查代码风格</li>
+<li>检查潜在 bug</li>
+<li>检查安全问题</li>
+<li>生成审查报告</li>
+</ol>
+<pre><code class="language-text">
+**tdd Skill**：</code></pre>
+<ol>
+<li>读取目标代码</li>
+<li>分析函数签名</li>
+<li>生成测试用例</li>
+<li>运行测试</li>
+<li>确认通过</li>
+</ol>
+<pre><code class="language-text">
+### 21.4 实际效果
+
+| 指标 | 使用前 | 使用后 |
+|------|--------|--------|
+| commit message 质量 | "fix bug" | "fix: resolve race condition in auth middleware" |
+| 代码审查时间 | 2小时/PR | 20分钟/PR |
+| 测试覆盖率 | 40% | 85% |
+| 发布时间 | 30分钟 | 5分钟 |
+
+### 21.5 团队反馈
+
+- 开发者A："以前写测试是最痛苦的事，现在 /tdd 直接生成，我只用检查。"
+- 开发者B："commit message 终于不用猜了。"
+- 技术负责人："代码审查从'人肉检查'变成了'人+AI 检查'，质量上去了，时间下来了。"
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 这个场景不是假设。我自己的团队就是这么做的。5个人用了2个月，效果确实好。关键是 Skills 不是替代人的判断，而是替代人的重复劳动。审查还是人在做，但 Claude 先过一遍，人只需要看 Claude 标记的问题。
+
+---
+
+## §22 场景二：从零构建一个 Skill
+
+### 22.1 需求
+
+做一个"API 文档生成" Skill。每次写完接口，自动扫描代码，生成 API 文档。
+
+### 22.2 第一步：定义 Skill 的行为
+</code></pre>
+<hr>
+<p>name: api-doc</p>
+<p>description: ></p>
+<p>  Scan TypeScript/JavaScript code for API endpoints (Express, Fastify, Hono)</p>
+<p>  and generate API documentation in Markdown format.</p>
+<hr>
+<h1 id="api-doc-generator">API Doc Generator</h1>
+<p>扫描代码中的 API 端点，生成 API 文档。</p>
+<h2 id="工作流程">工作流程</h2>
+<ol>
+<li>扫描项目中的路由定义</li>
+<li>提取端点信息（路径、方法、参数、返回值）</li>
+<li>生成 Markdown 格式的 API 文档</li>
+<li>输出到 docs/api.md</li>
+</ol>
+<h2 id="规则">规则</h2>
+<ul>
+<li>只扫描 Express/Fastify/Hono 的路由定义</li>
+<li>参数类型从 TypeScript 类型推断</li>
+<li>返回值类型从响应对象推断</li>
+<li>生成的文档包含：路径、方法、参数、返回值、示例</li>
+</ul>
+<pre><code class="language-text">
+### 22.3 第二步：写 Preamble
+</code></pre>
+<p>#!/bin/bash</p>
+<h1 id="检测使用的框架">检测使用的框架</h1>
+<p>if grep -q "express" package.json 2>/dev/null; then</p>
+<p>  echo "FRAMEWORK: express"</p>
+<p>elif grep -q "fastify" package.json 2>/dev/null; then</p>
+<p>  echo "FRAMEWORK: fastify"</p>
+<p>elif grep -q "hono" package.json 2>/dev/null; then</p>
+<p>  echo "FRAMEWORK: hono"</p>
+<p>else</p>
+<p>  echo "FRAMEWORK: unknown"</p>
+<p>fi</p>
+<h1 id="统计路由文件数">统计路由文件数</h1>
+<p>echo "ROUTE_FILES: $(find src -name "*.ts" -exec grep -l "router\.\|app\.\|get\|post\|put\|delete" {} \; 2>/dev/null | wc -l | tr -d ' ')"</p>
+<pre><code class="language-text">
+### 22.4 第三步：添加参考文件
+</code></pre>
+<p>.claude/skills/api-doc/</p>
+<p>├── SKILL.md</p>
+<p>├── scripts/</p>
+<p>│   └── preamble.sh</p>
+<p>└── references/</p>
+<p>    ├── express-patterns.md    # Express 路由模式</p>
+<p>    ├── fastify-patterns.md    # Fastify 路由模式</p>
+<p>    └── doc-template.md        # 文档模板</p>
+<pre><code class="language-text">
+### 22.5 第四步：测试
+</code></pre>
+<h1 id="在项目中测试">在项目中测试</h1>
+<p>cd my-api-project</p>
+<p>claude</p>
+<h1 id="触发-skill">触发 Skill</h1>
+<p>/api-doc</p>
+<pre><code class="language-text">
+检查输出的文档是否准确。
+
+### 22.6 第五步：迭代
+
+根据测试结果调整：
+
+- 路由扫描不准？调整正则表达式
+- 参数类型不对？改进类型推断逻辑
+- 文档格式不好看？修改模板
+
+### 22.7 第六步：发布
+</code></pre>
+<h1 id="写-readme">写 README</h1>
+<p>echo "# API Doc Generator\n\nGenerate API documentation from code." > README.md</p>
+<h1 id="发布">发布</h1>
+<p>npm publish</p>
+<pre><code class="language-text">
+&gt; **核心建议**：
+&gt;
+&gt; 构建 Skill 的关键是"先让它能用，再让它好用"。第一个版本不需要完美。能扫描出80%的路由就够了。后面再迭代优化。
+
+---
+
+## §23 场景三：团队协作中的 Skills
+
+### 23.1 需求
+
+一个分布式团队，3个城市、8个人。需要统一的代码规范和工作流程。
+
+### 23.2 方案：共享 Skills 仓库
+</code></pre>
+<p>team-skills/                    # 独立仓库</p>
+<p>├── .claude/</p>
+<p>│   └── skills/</p>
+<p>│       ├── code-style/         # 代码风格</p>
+<p>│       ├── commit-convention/  # 提交规范</p>
+<p>│       ├── review-checklist/   # 审查清单</p>
+<p>│       └── deploy-checklist/   # 部署清单</p>
+<p>├── README.md</p>
+<p>└── install.sh                  # 一键安装脚本</p>
+<pre><code class="language-text">
+### 23.3 一键安装脚本
+</code></pre>
+<p>#!/bin/bash</p>
+<h1 id="install-sh">install.sh</h1>
+<p>SKILL_DIR=".claude/skills"</p>
+<p>mkdir -p "$SKILL_DIR"</p>
+<h1 id="复制-skills">复制 Skills</h1>
+<p>cp -r skills/* "$SKILL_DIR/"</p>
+<p>echo "✓ Skills installed to $SKILL_DIR"</p>
+<p>echo "Available skills:"</p>
+<p>ls "$SKILL_DIR"</p>
+<pre><code class="language-text">
+团队成员只需要：
+</code></pre>
+<p>git clone https://github.com/team/team-skills.git /tmp/team-skills</p>
+<p>cd your-project</p>
+<p>/tmp/team-skills/install.sh</p>
+<pre><code class="language-text">
+### 23.4 版本管理
+
+Skills 仓库用 Git 管理版本：
+</code></pre>
+<h1 id="更新-skills">更新 Skills</h1>
+<p>cd team-skills</p>
+<p>git pull</p>
+<p>./install.sh  # 重新安装到项目</p>
+<pre><code class="language-text">
+### 23.5 团队规范
+
+| 规范 | 负责 Skill | 作用 |
+|------|-----------|------|
+| 代码风格 | code-style | 统一缩进、命名、注释 |
+| 提交规范 | commit-convention | 统一 commit message 格式 |
+| 审查标准 | review-checklist | 统一审查清单 |
+| 部署流程 | deploy-checklist | 统一部署步骤 |
+
+### 23.6 实际效果
+
+- 新人入职第一天就能用上团队的 Skills
+- 不同城市的开发者用同一套规范
+- 代码风格差异从"经常出现"降到"几乎没有"
+- 部署错误从"每月2-3次"降到"几乎为零"
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 团队协作最大的挑战不是技术，是"统一"。8个人，8种写代码习惯。Skills 解决了这个问题——不是靠培训（培训完了还是会忘），是靠工具（每次写代码都自动执行规范）。这是 Skills 最被低估的价值。
+
+---
+
+## 附录
+
+---
+
+### 附录 A：SKILL.md 模板库
+
+**代码审查模板**：
+</code></pre>
+<hr>
+<p>name: code-reviewer</p>
+<p>description: ></p>
+<p>  Review code for bugs, security issues, and best practices.</p>
+<p>  Analyzes code structure, naming conventions, and potential improvements.</p>
+<hr>
+<h1 id="code-reviewer">Code Reviewer</h1>
+<p>审查代码质量，发现问题并给出改进建议。</p>
+<h2 id="工作流程">工作流程</h2>
+<ol>
+<li>读取目标文件</li>
+<li>分析代码结构</li>
+<li>检查常见问题</li>
+<li>生成审查报告</li>
+</ol>
+<h2 id="检查清单">检查清单</h2>
+<ul>
+<li>[ ] 命名是否清晰</li>
+<li>[ ] 函数是否过长（>30行）</li>
+<li>[ ] 是否有未处理的异常</li>
+<li>[ ] 是否有硬编码的值</li>
+<li>[ ] 是否有安全风险</li>
+<li>[ ] 是否有性能问题</li>
+</ul>
+<h2 id="输出格式">输出格式</h2>
+<p>按严重程度排序：</p>
+<ul>
+<li>🔴 严重：必须修复</li>
+<li>🟡 警告：建议修复</li>
+<li>🟢 建议：可以改进</li>
+</ul>
+<pre><code class="language-text">
+**测试生成模板**：
+</code></pre>
+<hr>
+<p>name: test-generator</p>
+<p>description: ></p>
+<p>  Generate unit tests for TypeScript/JavaScript functions.</p>
+<p>  Uses Jest with snapshot testing for React components.</p>
+<hr>
+<h1 id="test-generator">Test Generator</h1>
+<p>为目标代码生成单元测试。</p>
+<h2 id="工作流程">工作流程</h2>
+<ol>
+<li>读取目标代码</li>
+<li>分析导出的函数和类</li>
+<li>确定测试框架（Jest/Vitest）</li>
+<li>生成测试文件</li>
+<li>运行测试确认通过</li>
+</ol>
+<h2 id="规则">规则</h2>
+<ul>
+<li>测试文件放在 <code>__tests__/</code> 目录</li>
+<li>测试函数名用 <code>should</code> 开头</li>
+<li>每个函数至少3个测试用例</li>
+<li>包含正常路径和边界情况</li>
+</ul>
+<pre><code class="language-text">
+**部署检查模板**：
+</code></pre>
+<hr>
+<p>name: deploy-checklist</p>
+<p>description: ></p>
+<p>  Pre-deployment checklist for production releases.</p>
+<p>  Checks environment, dependencies, tests, and security.</p>
+<hr>
+<h1 id="deploy-checklist">Deploy Checklist</h1>
+<p>部署前检查清单。</p>
+<h2 id="检查项">检查项</h2>
+<ol>
+<li><strong>测试</strong>：所有测试是否通过？</li>
+<li><strong>依赖</strong>：是否有安全漏洞？</li>
+<li><strong>环境变量</strong>：生产环境变量是否配置？</li>
+<li><strong>数据库</strong>：是否需要迁移？</li>
+<li><strong>回滚计划</strong>：出问题怎么回滚？</li>
+<li><strong>监控</strong>：监控是否就绪？</li>
+</ol>
+<h2 id="输出">输出</h2>
+<p>按检查项逐项报告，每项标记 ✅ 或 ❌。</p>
+<pre><code class="language-text">
+---
+
+### 附录 B：常见问题和解决方案
+
+| 问题 | 原因 | 解决方案 |
+|------|------|---------|
+| Skill 不触发 | description 不匹配 | 优化 description 关键词 |
+| 触发了错误的 Skill | description 太宽泛 | 让 description 更具体 |
+| 上下文爆了 | SKILL.md 太长 | 精简正文，内容移 references/ |
+| 脚本执行失败 | 权限问题 | `chmod +x scripts/*.sh` |
+| Skill 之间冲突 | 同时触发 | 用 description 区分场景 |
+| 输出质量不好 | 指令不够详细 | 加示例和规则 |
+| 安装后找不到 | 目录位置错 | 检查 `.claude/skills/` 路径 |
+
+---
+
+### 附录 C：Skills 生态资源
+
+| 资源 | 链接 | 说明 |
+|------|------|------|
+| 官方文档 | code.claude.com/docs/en/skills | Skills 官方指南 |
+| 社区 Skills 仓库 | github.com/alirezarezvani/claude-skills | 235个 Skills |
+| Skills 市场 | skills.sh | Skills 搜索和安装 |
+| nuwa-skill | github.com/alchaincyf/nuwa-skill | 思维蒸馏 |
+| huashu-design | github.com/alchaincyf/huashu-design | 设计 Skill |
+| npm skills | npmjs.com/search?q=claude-code-skill | npm 上的 Skills |
+
+---
+
+### 附录 D：Skill 开发清单
+
+**第一步：定义**
+- [ ] 明确 Skill 的用途
+- [ ] 确定触发场景
+- [ ] 设计工作流程
+
+**第二步：编写**
+- [ ] 创建 SKILL.md
+- [ ] 写 YAML 元数据（name、description）
+- [ ] 写工作流程（编号列表）
+- [ ] 写规则（约束行为）
+- [ ] 写示例（输入输出）
+
+**第三步：资源**
+- [ ] 添加 Preamble 脚本（如需要）
+- [ ] 添加 References 文件（如需要）
+- [ ] 添加 Assets 资源（如需要）
+
+**第四步：测试**
+- [ ] 在项目中测试
+- [ ] 检查触发是否准确
+- [ ] 检查输出质量
+- [ ] 检查上下文使用
+
+**第五步：发布**
+- [ ] 写 README.md
+- [ ] 添加 _metadata.json
+- [ ] 发布到 npm 或 GitHub
+
+---
+
+## 写在最后
+
+Skills 改变的不是 Claude Code 的能力，是 Claude Code 的专注度。
+
+没有 Skills，Claude Code 是一个什么都会的通才。有了 Skills，它在每个领域都能变成专家。
+
+这本书的23个章节，从"Skills 是什么"讲到"团队协作中的 Skills"。每章都建立在前一章的基础上。
+
+我的建议：
+
+1. **先用**。安装几个社区 Skills，跑通流程
+2. **再学**。理解触发机制、三级加载、性能优化
+3. **再写**。从简单的 Skill 开始，逐步增加复杂度
+4. **再分享**。发布到社区，或者团队共享
+
+Skills 是 Claude Code 生态中最容易上手、也最容易被低估的能力。
+
+它不需要你会写代码（虽然会写更好）。它需要你会描述"怎么做一件事"。
+
+如果你能把一件事描述清楚，你就能写一个 Skill。
+
+如果你能写一个 Skill，你就能让你的 Claude Code 变成任何领域的专家。
+
+---
+
+**滔哥**
+2026年5月4日
+
+---
+
+&gt; **Claude Code Skills 橙皮书** · v1.0
+&gt; 基于 Claude Code Skills 生态（2026年5月）
+&gt; 作者：滔哥
+&gt; 最后更新：2026年5月4日
+</code></pre>
+
+
+<div class="footer">
+  Claude Code Skills 橙皮书 · v1.0 · 滔哥 · 2026年5月4日
+</div>
+
+</main>
+
+<!-- Back to Top -->
+<button class="back-to-top" onclick="window.scrollTo({top:0})">↑</button>
+
+<script>
+// Sidebar toggle (mobile)
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('open');
+}
+
+// Close sidebar on nav click (mobile)
+document.querySelectorAll('.sidebar a').forEach(a => {
+  a.addEventListener('click', () => {
+    if (window.innerWidth <= 768) toggleSidebar();
+  });
+});
+
+// Search filter
+function filterNav(query) {
+  const q = query.toLowerCase().trim();
+  const items = document.querySelectorAll('.nav-part, .nav-section, .nav-subsection');
+  if (!q) {
+    items.forEach(el => el.style.display = '');
+    return;
+  }
+  items.forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// Back to top visibility
+const btn = document.querySelector('.back-to-top');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Active nav highlighting
+const navLinks = document.querySelectorAll('.nav-section, .nav-subsection');
+const sections = [];
+navLinks.forEach(link => {
+  const a = link.querySelector('a');
+  if (a) {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ el, link });
+  }
+});
+
+function updateActiveNav() {
+  const scrollY = window.scrollY + 100;
+  let current = null;
+  for (const s of sections) {
+    if (s.el.offsetTop <= scrollY) current = s;
+  }
+  navLinks.forEach(l => l.classList.remove('active'));
+  if (current) {
+    current.link.classList.add('active');
+    current.link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => { updateActiveNav(); ticking = false; });
+    ticking = true;
+  }
+});
+updateActiveNav();
+</script>
+
+</body>
+</html>
