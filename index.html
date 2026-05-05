@@ -564,8 +564,9 @@
 <tr><td>Day 2</td><td>§05-§08</td><td>掌握触发机制，熟悉内置和社区 Skills</td></tr>
 <tr><td>Day 3</td><td>§09-§12</td><td>学会创建自己的 Skills</td></tr>
 <tr><td>Day 4-5</td><td>§13-§16</td><td>进阶技巧，多 Skills 协作</td></tr>
-<tr><td>Day 6</td><td>§17-§20</td><td>浏览 Skills 生态全集</td></tr>
-<tr><td>Day 7</td><td>§21-§23</td><td>实战场景，综合运用</td></tr>
+<tr><td>Day 6</td><td>§17-§20</td><td>开发、设计、运维、效率类 Skills</td></tr>
+<tr><td>Day 7</td><td>§21-§24</td><td>数据分析、学术、视频、花叔全家桶</td></tr>
+<tr><td>Day 8</td><td>§25-§27</td><td>实战场景，综合运用</td></tr>
 </table></div>
 <hr>
 <h2 id="part-1-认识-skills">Part 1: 认识 Skills</h2>
@@ -915,29 +916,37 @@ Claude 读取所有 Skill 的 description（Level 1）
 <div class="table-wrapper"><table>
 <tr><th>指标</th><th>数据</th></tr>
 <tr><td>社区 Skills 数量</td><td>658+</td></tr>
-<tr><td>热门仓库 Stars</td><td>13,600+（alirezarezvani/claude-skills）</td></tr>
-<tr><td>覆盖领域</td><td>开发、设计、运维、文档、测试</td></tr>
+<tr><td>最高星仓库</td><td>40K+（anthropics/skills 官方）</td></tr>
+<tr><td>覆盖领域</td><td>开发、设计、运维、文档、测试、数据分析、学术、视频</td></tr>
 </table></div>
-<h3 id="08-2-主要来源">08.2 主要来源</h3>
+<h3 id="08-2-通用高频-skills-必装">08.2 通用高频 Skills（必装）</h3>
+<p>根据社区共识，以下 Skills 解决了 Claude 最核心的痛点：</p>
 <div class="table-wrapper"><table>
-<tr><th>来源</th><th>说明</th><th>Stars</th></tr>
-<tr><td>alirezarezvani/claude-skills</td><td>235个生产级 Skills</td><td>13.6K</td></tr>
-<tr><td>nuwa-skill</td><td>思维蒸馏 Skill</td><td>17K</td></tr>
-<tr><td>huashu-design</td><td>HTML 原生设计 Skill</td><td>11.7K</td></tr>
-<tr><td>npm skills 包</td><td>分散的独立 Skills</td><td>-</td></tr>
-<tr><td>个人仓库</td><td>开发者自用 Skills</td><td>-</td></tr>
+<tr><th>类别</th><th>Skill 名称</th><th>核心功能</th><th>备注</th></tr>
+<tr><td>元技能</td><td>find-skills</td><td>"技能的技能"，帮你搜索和安装其他 Skills</td><td>建议第一个安装</td></tr>
+<tr><td>联网搜索</td><td>web-access</td><td>解决原生联网弱问题，支持并行爬取</td><td>中文开发者推荐</td></tr>
+<tr><td>联网搜索</td><td>Web Search</td><td>官方/通用网页搜索</td><td>-</td></tr>
+<tr><td>开发核心</td><td>Superpowers</td><td>社区最火工作流，管开发全生命周期</td><td>安装量极高</td></tr>
+<tr><td>开发核心</td><td>Frontend Design</td><td>注入设计系统，极大提升 UI 质量</td><td>Anthropic 官方</td></tr>
+<tr><td>开发核心</td><td>Code Interpreter</td><td>执行 Python 代码、调试、绘图</td><td>-</td></tr>
+<tr><td>开发核心</td><td>ralph-wiggum</td><td>死磕代码，循环迭代直到跑通</td><td>适合模糊需求</td></tr>
+<tr><td>文档处理</td><td>Document Reader</td><td>读取 PDF/Word/PPT</td><td>-</td></tr>
+<tr><td>文档处理</td><td>docx/pdf/xlsx</td><td>官方 Office 套件处理</td><td>Anthropic 官方</td></tr>
 </table></div>
-<h3 id="08-3-skills-分类">08.3 Skills 分类</h3>
-<p>按用途分类：</p>
+<h3 id="08-3-高星数仓库榜单-1k-stars">08.3 高星数仓库榜单（>1K Stars）</h3>
+<p>以下是在 GitHub 上星数超过 1K 的顶级仓库，质量经过社区验证：</p>
 <div class="table-wrapper"><table>
-<tr><th>类别</th><th>数量</th><th>典型 Skill</th></tr>
-<tr><td>代码质量</td><td>50+</td><td>code-reviewer, linter, formatter</td></tr>
-<tr><td>测试</td><td>40+</td><td>tdd, unit-test, e2e-test</td></tr>
-<tr><td>设计</td><td>30+</td><td>huashu-design, ui-builder</td></tr>
-<tr><td>文档</td><td>30+</td><td>doc-generator, readme-writer</td></tr>
-<tr><td>部署</td><td>20+</td><td>deploy, ci-cd, docker</td></tr>
-<tr><td>效率</td><td>60+</td><td>commit, refactor, optimize</td></tr>
-<tr><td>AI 增强</td><td>40+</td><td>nuwa-skill, prompt-optimizer</td></tr>
+<tr><th>仓库</th><th>Stars</th><th>特点</th></tr>
+<tr><td>anthropics/skills</td><td>40K+</td><td>官方正统，含文档处理、MCP 构建等基础能力</td></tr>
+<tr><td>affaan-m/everything-claude-code</td><td>25K+</td><td>黑客松冠军，包含子代理和工作流</td></tr>
+<tr><td>sickn33/antigravity-awesome-skills</td><td>23K+</td><td>海量技能，支持 CLI 一键安装</td></tr>
+<tr><td>obra/superpowers</td><td>22K+</td><td>社区之王，20+ 实战技能，工程化首选</td></tr>
+<tr><td>ComposioHQ/awesome-claude-skills</td><td>19K+</td><td>大合集，分类清晰，覆盖面广</td></tr>
+<tr><td>VoltAgent/awesome-agent-skills</td><td>18K+</td><td>跨平台，兼容 Claude/Codex/Gemini</td></tr>
+<tr><td>alchaincyf/nuwa-skill</td><td>17K+</td><td>思维蒸馏，"蒸馏任何人的思维方式"</td></tr>
+<tr><td>alchaincyf/huashu-design</td><td>11.7K</td><td>HTML 原生设计，20种风格评审</td></tr>
+<tr><td>alirezarezvani/claude-skills</td><td>5K+</td><td>235个生产级 Skills，按岗位分类</td></tr>
+<tr><td>K-Dense-AI/claude-scientific-skills</td><td>5K+</td><td>科研专属，140+ 科学领域技能</td></tr>
 </table></div>
 <h3 id="08-4-怎么选择社区-skills">08.4 怎么选择社区 Skills</h3>
 <p>选 Skill 的三个标准：</p>
@@ -1524,7 +1533,21 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 
 ## §17 开发类 Skills
 
-### 17.1 代码质量
+### 17.1 必装开发 Skills
+
+| Skill | 来源 | 功能 | 推荐度 |
+|-------|------|------|--------|
+| Superpowers | obra/superpowers | 22K+ Stars，开发全生命周期工作流 | ★★★★★ |
+| Frontend Design | Anthropic 官方 | 注入设计系统，极大提升 UI 质量 | ★★★★★ |
+| ralph-wiggum | 社区 | 死磕代码，循环迭代直到跑通 | ★★★★★ |
+| code-reviewer | alirezarezvani | 代码审查 | ★★★★★ |
+| Code Interpreter | 社区 | 执行 Python 代码、调试、绘图 | ★★★★ |
+
+**Superpowers** 是社区安装量最高的 Skill。它不是一个单一功能，而是覆盖了整个开发生命周期：写代码 → 测试 → 审查 → 提交 → 部署。
+
+**ralph-wiggum** 解决了一个特殊问题：当需求模糊、Claude 第一次生成的代码跑不通时，它会自动循环迭代，直到代码能运行为止。适合"我也说不清要什么，但你给我试"的场景。
+
+### 17.2 代码质量
 
 | Skill | 来源 | 功能 | 推荐度 |
 |-------|------|------|--------|
@@ -1533,9 +1556,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 | formatter | 社区 | 代码格式化 | ★★★★ |
 | refactor | 社区 | 代码重构 | ★★★★ |
 
-**code-reviewer** 是最常用的开发类 Skill。它不只是检查语法错误，还会分析代码结构、命名规范、潜在的性能问题。
-
-### 17.2 测试
+### 17.3 测试
 
 | Skill | 来源 | 功能 | 推荐度 |
 |-------|------|------|--------|
@@ -1543,18 +1564,6 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 | unit-test | 社区 | 单元测试生成 | ★★★★ |
 | e2e-test | 社区 | 端到端测试 | ★★★ |
 | snapshot | 社区 | 快照测试 | ★★★ |
-
-**tdd** Skill 实现了真正的测试驱动开发流程：先写测试，再写代码，最后确认测试通过。
-
-### 17.3 Git 和版本控制
-
-| Skill | 来源 | 功能 | 推荐度 |
-|-------|------|------|--------|
-| commit | 内置 | 智能提交 | ★★★★★ |
-| ship | gstack | 完整发布流程 | ★★★★★ |
-| branch | 社区 | 分支管理 | ★★★★ |
-
-**commit** 是每天都在用的 Skill。它分析你的改动，生成规范的 commit message。
 
 ### 17.4 开发类 Skill 使用建议
 </code></pre>
@@ -1584,11 +1593,12 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 
 | Skill | 来源 | 功能 | 推荐度 |
 |-------|------|------|--------|
-| huashu-design | alchaincyf | HTML 原生设计 | ★★★★★ |
+| huashu-design | alchaincyf | HTML 原生设计，20种风格评审 | ★★★★★ |
+| Frontend Design | Anthropic 官方 | 注入设计系统，提升 UI 质量 | ★★★★★ |
 | ui-builder | 社区 | UI 组件生成 | ★★★★ |
 | figma-export | 社区 | Figma 导出 | ★★★ |
 
-**huashu-design** 是设计类 Skill 中最独特的一个。它不是生成设计稿，而是直接生成 HTML。你告诉它想要什么设计，它输出可用的网页代码。
+**huashu-design** 是设计类 Skill 中最独特的一个。它不是生成设计稿，而是直接生成 HTML。你告诉它想要什么设计，它输出可用的网页代码。支持20种设计风格：包豪斯、Neo-Brutalism、瑞士国际主义、浮世绘、像素画等。
 
 ### 18.2 设计审查
 
@@ -1718,19 +1728,215 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 
 ---
 
+## §21 数据分析类 Skills
+
+### 21.1 数据处理
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| data-analyst | CSV 加载、统计分析、可视化 | 通用数据分析 |
+| CSV Data Summarizer | 生成分布图、热图、缺失矩阵 | 数据清洗与概览 |
+| Senior Data Engineer | ETL/ELT 系统设计 | 大数据管道 |
+| Clickhouse | 高性能数据库查询优化 | 海量数据分析 |
+
+### 21.2 数据可视化
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| Dashboard Creator | 生成交互式 HTML 仪表盘 | 商业报表 |
+| D3.js Visualization | 出版级自定义图表 | 科研绘图、复杂可视化 |
+| huashu-data-pro | Excel 转交互式 HTML 报告（ECharts） | 数据报告 |
+
+**huashu-data-pro** 是花叔系列中专门做数据可视化的 Skill。输入一个 Excel 文件，它自动分析数据结构，生成一个带 ECharts 图表的交互式 HTML 报告。比手动做 Excel 图表好看10倍。
+
+### 21.3 数据分析工作流
+</code></pre>
+<ol>
+<li>/data-analyst — 加载数据，做初步分析</li>
+<li>/CSV Data Summarizer — 生成数据概览</li>
+<li>/Dashboard Creator — 做成交互式仪表盘</li>
+<li>/commit — 提交报告</li>
+</ol>
+<pre><code class="language-text">
+&gt; **核心建议**：
+&gt;
+&gt; 数据分析类 Skills 最大的价值不是"帮你算"，是"帮你可视化"。Claude 自己能做计算，但 Skills 让它输出好看的图表和报告。
+
+---
+
+## §22 学术研究类 Skills
+
+### 22.1 论文写作
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| manuscript-writing | 论文章节结构化指导 | 期刊/会议论文 |
+| language-polishing | 语法纠错、学术语言规范化 | 润色修改 |
+| abstract | 摘要生成 | 投稿 |
+| coverletter | 投稿信生成 | 投稿 |
+| 审稿回复 | 结构化回复审稿意见 | 修改重投 |
+
+### 22.2 文献管理
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| citation-manager | APA/MLA/GB-T 7714 格式生成 | 参考文献管理 |
+| 文献分析 | 提取研究问题/方法/发现 | 文献综述 |
+| anthropics/skills | 官方文档处理（Word/PPT/PDF） | 格式规范 |
+
+### 22.3 科研专属 Skills
+
+**K-Dense-AI/claude-scientific-skills** 是科研领域最全面的 Skill 集合，包含 140+ 个科学领域技能，覆盖：
+
+- 实验设计
+- 数据分析
+- 论文写作
+- 文献综述
+- 统计方法
+
+### 22.4 学术工作流
+</code></pre>
+<ol>
+<li>/文献分析 — 梳理已有文献</li>
+<li>/manuswriting — 搭建论文框架</li>
+<li>/language-polishing — 润色语言</li>
+<li>/citation-manager — 管理参考文献</li>
+<li>/abstract — 生成摘要</li>
+<li>/coverletter — 写投稿信</li>
+</ol>
+<pre><code class="language-text">
+&gt; **滔哥的经验**：
+&gt;
+&gt; 学术类 Skills 最实用的是 citation-manager。以前手动调参考文献格式，每次投稿都要改半天。现在一键生成 APA 或 GB-T 7714 格式。这个 Skill 本身不复杂，但省的时间最多。
+
+---
+
+## §23 视频制作类 Skills
+
+### 23.1 视频生成
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| Remotion Skills | React 代码生成视频/动画 | 技术解说、动态视频 |
+| sora2video | 图片生成视频 | 素材生成 |
+| video-use | 自动剪口癖、加字幕、调色 | 后期剪辑（替代剪映） |
+
+### 23.2 脚本和运营
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| huashu-douyin-script | 竞品分析到脚本生成的短视频闭环 | 短视频运营 |
+| huashu-video-check | 基于 MrBeast 策略检查标题/封面 | 视频优化 |
+
+**huashu-douyin-script** 是花叔系列中做短视频的 Skill。输入一个竞品视频链接，它会分析脚本结构、节奏、钩子，然后生成一个类似风格但内容不同的脚本。从竞品分析到脚本输出，一气呵成。
+
+### 23.3 配图生成
+
+| Skill | 核心能力 | 适用场景 |
+|-------|---------|---------|
+| huashu-wechat-image | 生成公众号配图 | 微信公众号 |
+| huashu-xhs-image | 生成小红书配图 | 小红书运营 |
+
+### 23.4 视频制作工作流
+</code></pre>
+<ol>
+<li>/huashu-douyin-script — 生成脚本</li>
+<li>/Remotion Skills — 生成动画素材</li>
+<li>/video-use — 自动剪辑</li>
+<li>/huashu-video-check — 检查标题和封面</li>
+</ol>
+<pre><code class="language-text">
+&gt; **核心建议**：
+&gt;
+&gt; 视频类 Skills 目前最适合技术解说类视频。Remotion 用 React 代码生成动画，非常适合编程教程。真人出镜类视频，Skills 帮助有限，主要在脚本和后期环节。
+
+---
+
+## §24 花叔 Skills 全家桶详解
+
+### 24.1 花叔是谁
+
+花叔（Alchaincyf），30万+ AI 博主。他的 Skills 仓库是中文开发者社区中质量最高的个人项目之一。
+
+**特点**：文档写得像产品说明书，覆盖内容创作全链路，错误处理极佳。
+
+### 24.2 核心工作流 Skills
+
+| Skill | 功能亮点 |
+|-------|---------|
+| huashu-slides | 一句话生成 PPTX |
+| huashu-data-pro | Excel 转交互式 HTML 报告（ECharts） |
+| huashu-design | 设计哲学顾问，20种风格评审 |
+| huashu-douyin-script | 竞品分析到脚本生成的短视频闭环 |
+
+### 24.3 写作与审校
+
+| Skill | 功能亮点 |
+|-------|---------|
+| huashu-proofreading | 三遍审校，将 AI 检测率压至 30% 以下 |
+| huashu-material-search | 调用 1800+ 个人素材库，增加"人味" |
+| huashu-article-to-x | 长文转社交媒体短文 |
+
+**huashu-proofreading** 最特别。它不是简单的语法检查，而是三遍审校：第一遍查逻辑，第二遍查语言，第三遍查"AI 味"。最终把 AI 生成内容的检测率压到 30% 以下。
+
+### 24.4 视频与配图
+
+| Skill | 功能亮点 |
+|-------|---------|
+| huashu-video-check | 基于 MrBeast 策略检查标题/封面 |
+| huashu-wechat-image | 生成公众号配图 |
+| huashu-xhs-image | 生成小红书配图 |
+
+### 24.5 huashu-slides 深度解析
+
+**如何触发**：
+</code></pre>
+<p>"帮我做一个关于 [主题] 的演示文稿"</p>
+<p>"生成一个介绍 [产品] 的 Slides"</p>
+<pre><code class="language-text">
+**18种设计风格**：
+
+| 类别 | 风格 |
+|------|------|
+| 艺术类 | 浮世绘、Snoopy 漫画、像素画、蒙德里安 |
+| 设计类 | 包豪斯、Neo-Brutalism、瑞士国际主义、田中一光、极简主义 |
+
+AI 在插画/漫画类风格表现最佳，极简类稍弱。
+
+**3种协作模式**：
+
+| 模式 | 交互程度 | 适合人群 |
+|------|---------|---------|
+| Full Auto（全自动） | 低（仅确认主题） | 赶时间、需求明确 |
+| Guided（引导式） | 中（推荐） | 大多数用户，平衡效率与控制力 |
+| Collaborative（协作式） | 高（逐页审批） | 对细节要求极高的汇报 |
+
+**2种技术路径**：
+
+| 路径 | 流程 | 优劣 |
+|------|------|------|
+| Path A（可编辑） | HTML 排版 → PPTX | 推荐，文字可在 Office 中二次编辑 |
+| Path B（视觉版） | AI 生成整页图片 → PPTX | 视觉冲击力强，但文字不可编辑 |
+
+&gt; **滔哥的经验**：
+&gt;
+&gt; 花叔 Skills 最大的价值不是单个 Skill 有多强，而是它们形成了一个完整的内容创作工作流。从写文章（huashu-proofreading）到做 PPT（huashu-slides）到做视频（huashu-douyin-script）到配图（huashu-wechat-image），一条链走完。如果你是内容创作者，装一套花叔 Skills，效率能提升 5 倍。
+
+---
+
 ## Part 6: 实战场景
 
 真实项目中的 Skills 用法。这部分综合运用前面学到的所有能力。
 
 ---
 
-## §21 场景一：用 Skills 搭建完整开发流程
+## §25 场景一：用 Skills 搭建完整开发流程
 
-### 21.1 需求
+### 25.1 需求
 
 一个5人的前端团队，想用 Skills 标准化开发流程。每个人写代码的习惯不同，提交质量参差不齐，代码审查靠人肉。
 
-### 21.2 Skill 清单
+### 25.2 Skill 清单
 </code></pre>
 <p>.claude/skills/</p>
 <p>├── commit/           # 智能提交</p>
@@ -1744,7 +1950,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <p>└── investigate/      # 问题排查</p>
 <p>    └── SKILL.md</p>
 <pre><code class="language-text">
-### 21.3 每个 Skill 的核心逻辑
+### 25.3 每个 Skill 的核心逻辑
 
 **commit Skill**：</code></pre>
 <ol>
@@ -1772,7 +1978,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <li>确认通过</li>
 </ol>
 <pre><code class="language-text">
-### 21.4 实际效果
+### 25.4 实际效果
 
 | 指标 | 使用前 | 使用后 |
 |------|--------|--------|
@@ -1781,7 +1987,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 | 测试覆盖率 | 40% | 85% |
 | 发布时间 | 30分钟 | 5分钟 |
 
-### 21.5 团队反馈
+### 25.5 团队反馈
 
 - 开发者A："以前写测试是最痛苦的事，现在 /tdd 直接生成，我只用检查。"
 - 开发者B："commit message 终于不用猜了。"
@@ -1793,13 +1999,13 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 
 ---
 
-## §22 场景二：从零构建一个 Skill
+## §26 场景二：从零构建一个 Skill
 
-### 22.1 需求
+### 26.1 需求
 
 做一个"API 文档生成" Skill。每次写完接口，自动扫描代码，生成 API 文档。
 
-### 22.2 第一步：定义 Skill 的行为
+### 26.2 第一步：定义 Skill 的行为
 </code></pre>
 <hr>
 <p>name: api-doc</p>
@@ -1824,7 +2030,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <li>生成的文档包含：路径、方法、参数、返回值、示例</li>
 </ul>
 <pre><code class="language-text">
-### 22.3 第二步：写 Preamble
+### 26.3 第二步：写 Preamble
 </code></pre>
 <p>#!/bin/bash</p>
 <h1 id="检测使用的框架">检测使用的框架</h1>
@@ -1840,7 +2046,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <h1 id="统计路由文件数">统计路由文件数</h1>
 <p>echo "ROUTE_FILES: $(find src -name "*.ts" -exec grep -l "router\.\|app\.\|get\|post\|put\|delete" {} \; 2>/dev/null | wc -l | tr -d ' ')"</p>
 <pre><code class="language-text">
-### 22.4 第三步：添加参考文件
+### 26.4 第三步：添加参考文件
 </code></pre>
 <p>.claude/skills/api-doc/</p>
 <p>├── SKILL.md</p>
@@ -1851,7 +2057,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <p>    ├── fastify-patterns.md    # Fastify 路由模式</p>
 <p>    └── doc-template.md        # 文档模板</p>
 <pre><code class="language-text">
-### 22.5 第四步：测试
+### 26.5 第四步：测试
 </code></pre>
 <h1 id="在项目中测试">在项目中测试</h1>
 <p>cd my-api-project</p>
@@ -1861,7 +2067,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <pre><code class="language-text">
 检查输出的文档是否准确。
 
-### 22.6 第五步：迭代
+### 26.6 第五步：迭代
 
 根据测试结果调整：
 
@@ -1869,7 +2075,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 - 参数类型不对？改进类型推断逻辑
 - 文档格式不好看？修改模板
 
-### 22.7 第六步：发布
+### 26.7 第六步：发布
 </code></pre>
 <h1 id="写-readme">写 README</h1>
 <p>echo "# API Doc Generator\n\nGenerate API documentation from code." > README.md</p>
@@ -1882,13 +2088,13 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 
 ---
 
-## §23 场景三：团队协作中的 Skills
+## §27 场景三：团队协作中的 Skills
 
-### 23.1 需求
+### 27.1 需求
 
 一个分布式团队，3个城市、8个人。需要统一的代码规范和工作流程。
 
-### 23.2 方案：共享 Skills 仓库
+### 27.2 方案：共享 Skills 仓库
 </code></pre>
 <p>team-skills/                    # 独立仓库</p>
 <p>├── .claude/</p>
@@ -1900,7 +2106,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <p>├── README.md</p>
 <p>└── install.sh                  # 一键安装脚本</p>
 <pre><code class="language-text">
-### 23.3 一键安装脚本
+### 27.3 一键安装脚本
 </code></pre>
 <p>#!/bin/bash</p>
 <h1 id="install-sh">install.sh</h1>
@@ -1918,7 +2124,7 @@ Skills 可以使用 MCP 提供的工具。一个"部署 Skill"可以：
 <p>cd your-project</p>
 <p>/tmp/team-skills/install.sh</p>
 <pre><code class="language-text">
-### 23.4 版本管理
+### 27.4 版本管理
 
 Skills 仓库用 Git 管理版本：
 </code></pre>
@@ -1927,7 +2133,7 @@ Skills 仓库用 Git 管理版本：
 <p>git pull</p>
 <p>./install.sh  # 重新安装到项目</p>
 <pre><code class="language-text">
-### 23.5 团队规范
+### 27.5 团队规范
 
 | 规范 | 负责 Skill | 作用 |
 |------|-----------|------|
@@ -1936,7 +2142,7 @@ Skills 仓库用 Git 管理版本：
 | 审查标准 | review-checklist | 统一审查清单 |
 | 部署流程 | deploy-checklist | 统一部署步骤 |
 
-### 23.6 实际效果
+### 27.6 实际效果
 
 - 新人入职第一天就能用上团队的 Skills
 - 不同城市的开发者用同一套规范
@@ -2055,13 +2261,35 @@ Skills 仓库用 Git 管理版本：
 
 ### 附录 C：Skills 生态资源
 
+**高星仓库（&gt;1K Stars）**：
+
+| 仓库 | Stars | 说明 |
+|------|-------|------|
+| anthropics/skills | 40K+ | 官方正统，基础能力 |
+| affaan-m/everything-claude-code | 25K+ | 黑客松冠军，子代理和工作流 |
+| sickn33/antigravity-awesome-skills | 23K+ | 海量技能，CLI 一键安装 |
+| obra/superpowers | 22K+ | 社区之王，20+ 实战技能 |
+| ComposioHQ/awesome-claude-skills | 19K+ | 大合集，分类清晰 |
+| VoltAgent/awesome-agent-skills | 18K+ | 跨平台兼容 |
+| alchaincyf/nuwa-skill | 17K+ | 思维蒸馏 |
+| alchaincyf/huashu-design | 11.7K | HTML 原生设计 |
+| alirezarezvani/claude-skills | 5K+ | 235个生产级 Skills |
+| K-Dense-AI/claude-scientific-skills | 5K+ | 科研专属，140+ 技能 |
+
+**推荐组合**：
+
+| 人群 | 推荐 Skills |
+|------|------------|
+| 全能开发者 | Superpowers + Frontend Design + ralph-wiggum |
+| 自媒体博主 | huashu-skills（全套）+ video-use |
+| 科研人员 | claude-scientific-skills + citation-manager + data-analyst |
+
+**其他资源**：
+
 | 资源 | 链接 | 说明 |
 |------|------|------|
 | 官方文档 | code.claude.com/docs/en/skills | Skills 官方指南 |
-| 社区 Skills 仓库 | github.com/alirezarezvani/claude-skills | 235个 Skills |
 | Skills 市场 | skills.sh | Skills 搜索和安装 |
-| nuwa-skill | github.com/alchaincyf/nuwa-skill | 思维蒸馏 |
-| huashu-design | github.com/alchaincyf/huashu-design | 设计 Skill |
 | npm skills | npmjs.com/search?q=claude-code-skill | npm 上的 Skills |
 
 ---
@@ -2104,7 +2332,7 @@ Skills 改变的不是 Claude Code 的能力，是 Claude Code 的专注度。
 
 没有 Skills，Claude Code 是一个什么都会的通才。有了 Skills，它在每个领域都能变成专家。
 
-这本书的23个章节，从"Skills 是什么"讲到"团队协作中的 Skills"。每章都建立在前一章的基础上。
+这本书的27个章节，从"Skills 是什么"讲到"团队协作中的 Skills"。每章都建立在前一章的基础上。
 
 我的建议：
 
