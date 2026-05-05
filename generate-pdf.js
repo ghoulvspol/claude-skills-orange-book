@@ -125,8 +125,10 @@ for (let i = 0; i < lines.length; i++) {
       flushTable(); flushList(); flushBq();
       inCodeBlock = true;
       codeLang = line.trim().replace(/^```/, '').trim() || 'text';
-    } else {
+    } else if (line.trim() === '```') {
       flushCode();
+    } else {
+      codeLines.push(line);
     }
     continue;
   }

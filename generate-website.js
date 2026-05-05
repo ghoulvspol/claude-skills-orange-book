@@ -130,8 +130,11 @@ for (let i = 0; i < lines.length; i++) {
       flushTable(); flushList(); flushBq();
       inCodeBlock = true;
       codeLang = line.trim().replace(/^```/, '').trim() || 'text';
-    } else {
+    } else if (line.trim() === '```') {
       flushCode();
+    } else {
+      // Nested code fence (e.g. ```typescript inside ```markdown) — treat as content
+      codeLines.push(line);
     }
     continue;
   }
@@ -159,10 +162,13 @@ for (let i = 0; i < lines.length; i++) {
       let type = 'other';
       if (rawText.startsWith('Part ')) type = 'part';
       else if (rawText.match(/^§\d+/)) type = 'section';
-      else if (rawText.match(/^### /)) type = 'subsection';
+      else if (level === 3 && rawText.match(/^\d+\.\d+/)) type = 'subsection';
       else if (rawText.match(/^附录/)) type = 'appendix';
+      else if (level === 2 && rawText.match(/^(前言|阅读指南|写在最后)/)) type = 'section';
 
-      navItems.push({ level, text: rawText, id, type });
+      if (type !== 'other') {
+        navItems.push({ level, text: rawText, id, type });
+      }
       html += `<h${level} id="${id}">${text}</h${level}>\n`;
     } else {
       html += `<h${level} id="${id}">${text}</h${level}>\n`;
