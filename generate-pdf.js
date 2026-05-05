@@ -562,11 +562,24 @@ const fullHtml = `<!DOCTYPE html>
   <div class="toc-item">§18 设计类 Skills</div>
   <div class="toc-item">§19 运维类 Skills</div>
   <div class="toc-item">§20 效率类 Skills</div>
+  <div class="toc-item">§21 数据分析类 Skills</div>
+  <div class="toc-item">§22 学术研究类 Skills</div>
+  <div class="toc-item">§23 视频制作类 Skills</div>
+  <div class="toc-item">§24 花叔 Skills 全家桶详解</div>
 
-  <div class="toc-part">Part 6: 实战场景</div>
-  <div class="toc-item">§21 场景一：用 Skills 搭建完整开发流程</div>
-  <div class="toc-item">§22 场景二：从零构建一个 Skill</div>
-  <div class="toc-item">§23 场景三：团队协作中的 Skills</div>
+  <div class="toc-part">Part 7: 工程化方法论</div>
+  <div class="toc-item">§25 挑选 Skill 的三条硬线</div>
+  <div class="toc-item">§26 AI 编程工程化：OpenSpec + gstack</div>
+  <div class="toc-item">§27 三大 AI 编程神器合体指南</div>
+
+  <div class="toc-part">Part 8: 案例与方法论</div>
+  <div class="toc-item">§28 Claude Code 黑客松三强案例</div>
+  <div class="toc-item">§29 YC：AI-Native 公司组织方法论</div>
+
+  <div class="toc-part">Part 9: 实战场景</div>
+  <div class="toc-item">§30 场景一：用 Skills 搭建完整开发流程</div>
+  <div class="toc-item">§31 场景二：从零构建一个 Skill</div>
+  <div class="toc-item">§32 场景三：团队协作中的 Skills</div>
 
   <div class="toc-part">附录</div>
   <div class="toc-item">附录 A：SKILL.md 模板库</div>

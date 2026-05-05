@@ -48,9 +48,9 @@ Claude Code Skills 是什么？一句话：**给 Claude Code 装技能包**。
 | Day 2 | §05-§08 | 掌握触发机制，熟悉内置和社区 Skills |
 | Day 3 | §09-§12 | 学会创建自己的 Skills |
 | Day 4-5 | §13-§16 | 进阶技巧，多 Skills 协作 |
-| Day 6 | §17-§20 | 开发、设计、运维、效率类 Skills |
-| Day 7 | §21-§24 | 数据分析、学术、视频、花叔全家桶 |
-| Day 8 | §25-§27 | 实战场景，综合运用 |
+| Day 6 | §17-§24 | Skills 生态全集，七大类 Skill 详解 |
+| Day 7 | §25-§29 | 工程化方法论、案例与 AI-Native 组织 |
+| Day 8 | §30-§32 | 实战场景，综合运用 |
 
 ---
 
@@ -1731,19 +1731,321 @@ AI 在插画/漫画类风格表现最佳，极简类稍弱。
 
 ---
 
-## Part 6: 实战场景
+## Part 7: 工程化方法论
+
+Skills 不是孤岛。当你的 Skills 足够多，就需要一套工程化的方法来管理它们。这部分讲的是怎么把 Skills 组织成一套完整的开发流程。
+
+---
+
+## §25 挑选 Skill 的三条硬线
+
+### 25.1 不是越多越好
+
+装 Skills 不是收藏，是为工作流配工作站。桌面越干净，速度越稳。
+
+三条硬线帮你决定该不该装一个 Skill：
+
+| 原则 | 说明 |
+|------|------|
+| 一周用得到三次以上 | Skill 描述会被注入每一轮对话的 system prompt，不管你用没用。低频 Skill 在白白消耗 token |
+| 没它，prompt 写起来真的会累 | 5行 prompt 能搞定的事，没必要装 Skill；但像处理 docx 表格/批注这种，装了直接读，省心差距明显 |
+| 描述精准，不会乱触发 | 好的 Skill 描述清晰说明触发场景，避免污染 context |
+
+### 25.2 新手必装 5 个
+
+| # | Skill | 核心功能 | 典型场景 |
+|---|-------|---------|---------|
+| 1 | skill-creator | 让 Claude 帮你造 Skill，交互式访谈 → 生成 SKILL.md | 把重复 prompt 沉淀为 Skill |
+| 2 | pdf | 读/写/合并/拆分/加水印/OCR/提取表格/填表单 | 合作方案 PDF 拆章分发 |
+| 3 | docx | 复杂格式、表格、批注、tracked changes、图片插入 | 批量替换、保留批注 |
+| 4 | canvas-design | 基于设计原则生成 png/pdf 视觉作品 | 900×383 封面图 3 分钟搞定 |
+| 5 | xlsx 或 pptx（二选一） | Office 文档处理 | 看最近 30 天哪个用得多装哪个 |
+
+### 25.3 进阶推荐 5 个
+
+| # | Skill | 核心功能 |
+|---|-------|---------|
+| 1 | NanoBanana-PPT-Skills（歸藏） | 杂志风格/横滑/WebGL 流体背景，2.1K star |
+| 2 | mcp-builder | 教 Claude 写 MCP server，连接外部 API |
+| 3 | web-artifacts-builder | 多组件 React + Tailwind + shadcn/ui 项目生成 |
+| 4 | code-review（NeoLabHQ） | 多角色 PR 审查：bug-hunter/security/quality |
+| 5 | last30days-skill | 抓取 Reddit/X/YouTube/HN 过去 30 天热门内容 |
+
+### 25.4 四类劝你别装的 Skill
+
+- **"通用助手"型**：描述太宽，触发条件太松，污染 context
+- **"行业特化"备胎**：每月用不到一次，天天在后台吃 token
+- **"功能仿制"型**：和官方 Skill 高度重叠，Anthropic 官方已覆盖 90% 场景
+- **30天未触发**：每月翻 `~/.claude/skills/` 看访问时间，移走（不删）上个月没访问的
+
+> **核心建议**：
+>
+> 装之前先看 SKILL.md 的 description 字段，那一行决定了它会不会污染你的 context。
+
+---
+
+## §26 AI 编程工程化：OpenSpec + gstack
+
+### 26.1 解决的问题
+
+| 痛点 | OpenSpec 方案 | gstack 方案 | 组合效果 |
+|------|-------------|------------|---------|
+| 需求不明确 | 结构化规格文档 | CEO 角色定义 | 规格+战略双重保障 |
+| 角色混乱 | 无角色概念 | 23个明确角色 | 规格驱动角色协作 |
+| 质量保障 | 行为验证 | QA+工程经理审查 | 多层质量关卡 |
+| 变更追溯 | 完整归档机制 | 依赖 Git 历史 | 规格归档+Git 追溯 |
+| 部署发布 | 无专门机制 | 发布经理角色 | 规格验收+发布流程 |
+
+### 26.2 核心概念对比
+
+| 维度 | OpenSpec | gstack | Superpowers |
+|------|---------|--------|------------|
+| 定位 | 规格驱动变更管理 | 角色化技能集合 | 行为约束工作流 |
+| 核心能力 | 提案→设计→规格→任务→归档 | 23个角色技能 | 14个流程 Skills |
+| 适用工具 | 25+ AI 助手 | Claude Code 为主 | Claude Code/Codex |
+
+### 26.3 gstack 核心角色（23个）
+
+| 角色 | 命令 | 职责 |
+|------|------|------|
+| CEO | /gstack:ceo | 产品战略、愿景、高层需求 |
+| 工程经理 | /gstack:eng-manager | 架构审查、代码质量、技术规划 |
+| 工程师 | /gstack:engineer | 功能实现、编写生产级代码 |
+| QA | /gstack:qa | 浏览器测试、编写测试套件 |
+| 发布经理 | /gstack:release-manager | 版本管理、变更日志、部署准备 |
+| 设计师 | /gstack:design | UI/UX 设计审查 |
+| 文档工程师 | /gstack:doc | 技术文档编写 |
+| DevEx | /gstack:devex | 开发者体验优化 |
+
+### 26.4 完整工作流
+
+```
+战略 → 规格 → 实现 → 测试 → 验证 → 发布
+  ↓       ↓       ↓       ↓       ↓        ↓
+ CEO   OpenSpec  Engineer QA    OpenSpec  Release
+Eng.Mgr         Eng.Mgr         Eng.Mgr  Manager
+                              QA
+```
+
+**阶段一：战略与规格定义**
+
+1. `/gstack:ceo` — 输入战略愿景
+2. `/opsx:explore` — 技术探索
+3. `/opsx:propose` — 创建正式提案
+4. `/gstack:eng-manager` — 技术审查
+5. 更新规格文档
+
+**阶段二：角色化执行**
+
+6. `/gstack:eng-manager` — 任务拆分（2-4小时粒度）
+7. `/gstack:engineer` — 实现代码
+8. `/gstack:qa` — 测试
+
+**阶段三：验证与发布**
+
+9. `/opsx:verify` — 验证
+10. `/gstack:release-manager` — 准备发布
+11. `/opsx:archive` — 归档
+
+### 26.5 安装
+
+```bash
+# OpenSpec
+npm install -g @fission-ai/openspec@latest
+
+# gstack
+git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git \
+  ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup
+```
+
+### 26.6 最佳实践
+
+- 不要直接让工程师实现，先定义规格
+- 小型变更（<4h）：简化流程
+- 中型变更（1-3天）：标准流程
+- 大型变更（>3天）：完整流程 + 多变更管理
+
+> **滔哥的经验**：
+>
+> OpenSpec + gstack 解决了一个我一直没解决的问题：需求到代码的"翻译损耗"。以前产品经理说一句，工程师理解一句，最后做出来的东西跟需求差了30%。现在有了结构化规格文档 + 角色化执行，翻译损耗降到了 5% 以下。
+
+---
+
+## §27 三大 AI 编程神器合体指南
+
+### 27.1 三套插件一览
+
+| 插件 | 仓库 | 定位 |
+|------|------|------|
+| oh-my-openagent | code-yeongyu/oh-my-openagent | 多 Agent 编排框架 |
+| superpowers | obra/superpowers | 开发最佳实践方法论库 |
+| gstack | garrytan/gstack | 标准研发流水线 |
+
+### 27.2 核心差异对比
+
+| 维度 | superpowers | gstack | oh-my-openagent |
+|------|------------|--------|----------------|
+| 核心理念 | 开发活动拆成可复用 Skill | Think→Plan→Build→Review→Test→Ship→Reflect | 多 Agent 并行编排 |
+| 组织方式 | 按主题分组 | 按冲刺阶段串联 | 模式+功能+技能+Agent 角色 |
+| 使用方式 | 按需调用单个 Skill | 按流程逐步推进 | 命令拉起多 Agent |
+| 最佳场景 | 日常工程规范化 | 单 feature 全流程交付 | 多任务并行、复杂项目 |
+
+### 27.3 各插件核心能力
+
+**superpowers（方法论技能库）**：
+
+| Skill | 功能 |
+|-------|------|
+| brainstorming | 苏格拉底式需求头脑风暴 |
+| test-driven-development | RED→GREEN→REFACTOR |
+| systematic-debugging | 4阶段 root cause 流程 |
+| subagent-driven-development | 双阶段评审 |
+| writing-plans / executing-plans | 计划与执行 |
+
+**gstack（冲刺流水线）**：
+
+| Skill | 功能 |
+|-------|------|
+| /office-hours | YC 办公室访谈，6个 forcing questions |
+| /plan-eng-review | 架构审查 |
+| /review | Staff Engineer 找 CI 通过的隐藏 bug |
+| /qa | 测试→找 bug→修复→复验 |
+| /ship | 同步 main→跑测试→push→开 PR |
+
+**oh-my-openagent（多 Agent 编排）**：
+
+| Skill | 功能 |
+|-------|------|
+| ultrawork/ulw | 一键多 Agent 开发模式 |
+| deep-interview | 苏格拉底式访谈 |
+| /team 3:executor | 多智能体协作流水线 |
+| autopilot | 全自动 5 阶段执行 |
+
+### 27.4 推荐组合使用
+
+| 阶段 | 推荐指令 |
+|------|---------|
+| 想清楚 | superpowers/brainstorming + gstack/office-hours |
+| 规划 | gstack/plan-eng-review + oh-my-openagent/omc-plan |
+| 开发 | oh-my-openagent/ultrawork + superpowers/TDD |
+| 审查 | gstack/review + oh-my-openagent/team:code-reviewer |
+| 发布 | gstack/ship + gstack/document-release |
+
+### 27.5 /findme 指令
+
+自定义 Skill：每次输入 `/findme`，AI 进入访谈模式，判断当前需求和阶段，推荐最适合的指令。
+
+> **核心建议**：
+>
+> 三套插件不冲突，可以叠加。superpowers 管"怎么做"，gstack 管"什么流程"，oh-my-openagent 管"谁来做"。三者组合，覆盖了从想法到部署的完整链路。
+
+---
+
+## Part 8: 案例与方法论
+
+看别人怎么用 Skills 和 AI 编程工具，能帮你少走弯路。这部分是真实案例和组织方法论。
+
+---
+
+## §28 Claude Code 黑客松三强案例
+
+### 28.1 比赛概况
+
+Anthropic「Built with Opus 4.7」黑客松，288个项目，全部用 Claude Code + Opus 4.7 搭建。
+
+### 28.2 三强项目
+
+**金牌：MedKit — 把会诊室搬进浏览器**
+
+- 作者：Bedirhan Keskin（土耳其，医生转软件工程师）
+- 全语音、不打字，AI 病人有人味（会犹豫、反问、焦虑）
+- 三维度评分：数据采集/临床管理/人际沟通
+- 引用真实指南条文（NICE/ESC/AHA/GINA/GOLD），无伪造引用
+- 链接：medkit-app.vercel.app
+
+**银牌：Wrench Board — 电子维修诊断工作台**
+
+- 作者：Alexis Chapellier（法国，微焊技师）
+- 4个正交工作流 + 36个专用 agent 工具
+- 反幻觉：不允许编造元件位号，服务端 post-hoc sanitizer
+- 12种 boardview 格式解析器
+- Apache 2.0 开源
+
+**铜牌：Maieutic — 写代码前先讲清你为啥这么写**
+
+- 作者：Paula Vasquez-Henriquez（智利，教育圈）
+- 命名来自苏格拉底「产婆术」
+- 先思考、再编码，强迫元认知
+- AI 时代的编程教育解药
+
+### 28.3 共同公式
+
+```
+我最懂的那行 × Opus 4.7 的 agent 能力 = 能立刻交付价值的工具
+```
+
+三个获奖者有一个共同点：**他们都不是职业程序员**。一个是医生，一个是微焊技师，一个是教育工作者。但他们都在自己最懂的领域，用 Claude Code 做出了真正有用的工具。
+
+> **滔哥的经验**：
+>
+> 黑客松三强给我最大的启发是：AI 编程的门槛不在"会不会写代码"，在"懂不懂问题"。你最懂的那个领域，就是你最大的优势。Claude Code 负责写代码，你负责定义问题。
+
+---
+
+## §29 YC：AI-Native 公司组织方法论
+
+### 29.1 核心命题
+
+"AI should not be a tool your company just uses. It should be the operating system your company runs on."
+
+— Diana Hu, YC Partner
+
+### 29.2 关键概念
+
+| 概念 | 说明 |
+|------|------|
+| 闭环公司 vs 开环公司 | 传统公司是 open loop（无系统反馈）；AI-native 应是 closed loop（信息→反馈→修正流程） |
+| 可查询公司（Queryable Company） | 整个组织对 AI 可读、可理解、可回放。会议记录、减少 DM、嵌入 agent、打通 dashboard |
+| Software Factories | 人写 spec → agent 生成实现 → 循环迭代直到通过测试 |
+| 中层管理变成了 markdown | 12个 agent 通过纯文本文件共享上下文。管理没有消失，变成了约束文档 |
+| Token Maxing | 拼 token 投入强度而非人头数。最强公司 = 最敢把 API 预算当生产力投资 |
+
+### 29.3 AI-Native 的五个特征
+
+1. **信息对 AI 可读**：会议记录、决策文档、代码规范都以结构化格式存储
+2. **反馈闭环**：agent 做完事情后，结果自动回流到决策系统
+3. **角色由 Skill 定义**：不是"某个人是 QA"，而是"QA 这个角色由 /gstack:qa 这个 Skill 承担"
+4. **管理变成了文档**：约束规则、质量标准、发布流程都写在 markdown 里，agent 读取执行
+5. **Token 是生产力投资**：不是"省着用"，而是"投越多，产出越高"
+
+### 29.4 争议与反思
+
+**支持方**：queryable company 概念正确，agent 读文件→干活→写回，这是最自然的工作方式。
+
+**质疑方**：
+
+- 很难假设心智模型能通过 spec 准确映射到代码每个细节 → agent drift
+- 闭源模型 API 调用 = 把公司一切交给外部 → 信息安全风险
+
+> **滔哥的经验**：
+>
+> YC 的方法论我不完全认同，但有一个观点我深信不疑：**管理没有消失，变成了约束文档**。以前管理者靠开会传达要求，现在写成 markdown，agent 读取执行。这个转变已经在发生了。你写的 CLAUDE.md，本质上就是你的管理文档。
+
+---
+
+## Part 9: 实战场景
 
 真实项目中的 Skills 用法。这部分综合运用前面学到的所有能力。
 
 ---
 
-## §25 场景一：用 Skills 搭建完整开发流程
+## §30 场景一：用 Skills 搭建完整开发流程
 
 ### 25.1 需求
 
 一个5人的前端团队，想用 Skills 标准化开发流程。每个人写代码的习惯不同，提交质量参差不齐，代码审查靠人肉。
 
-### 25.2 Skill 清单
+### 30.2 Skill 清单
 
 ```
 .claude/skills/
@@ -1759,7 +2061,7 @@ AI 在插画/漫画类风格表现最佳，极简类稍弱。
     └── SKILL.md
 ```
 
-### 25.3 每个 Skill 的核心逻辑
+### 30.3 每个 Skill 的核心逻辑
 
 **commit Skill**：
 ```
@@ -1787,7 +2089,7 @@ AI 在插画/漫画类风格表现最佳，极简类稍弱。
 5. 确认通过
 ```
 
-### 25.4 实际效果
+### 30.4 实际效果
 
 | 指标 | 使用前 | 使用后 |
 |------|--------|--------|
@@ -1796,7 +2098,7 @@ AI 在插画/漫画类风格表现最佳，极简类稍弱。
 | 测试覆盖率 | 40% | 85% |
 | 发布时间 | 30分钟 | 5分钟 |
 
-### 25.5 团队反馈
+### 30.5 团队反馈
 
 - 开发者A："以前写测试是最痛苦的事，现在 /tdd 直接生成，我只用检查。"
 - 开发者B："commit message 终于不用猜了。"
@@ -1808,13 +2110,13 @@ AI 在插画/漫画类风格表现最佳，极简类稍弱。
 
 ---
 
-## §26 场景二：从零构建一个 Skill
+## §31 场景二：从零构建一个 Skill
 
-### 26.1 需求
+### 31.1 需求
 
 做一个"API 文档生成" Skill。每次写完接口，自动扫描代码，生成 API 文档。
 
-### 26.2 第一步：定义 Skill 的行为
+### 31.2 第一步：定义 Skill 的行为
 
 ```markdown
 ---
@@ -1843,7 +2145,7 @@ description: >
 - 生成的文档包含：路径、方法、参数、返回值、示例
 ```
 
-### 26.3 第二步：写 Preamble
+### 31.3 第二步：写 Preamble
 
 ```bash
 #!/bin/bash
@@ -1862,7 +2164,7 @@ fi
 echo "ROUTE_FILES: $(find src -name "*.ts" -exec grep -l "router\.\|app\.\|get\|post\|put\|delete" {} \; 2>/dev/null | wc -l | tr -d ' ')"
 ```
 
-### 26.4 第三步：添加参考文件
+### 31.4 第三步：添加参考文件
 
 ```
 .claude/skills/api-doc/
@@ -1875,7 +2177,7 @@ echo "ROUTE_FILES: $(find src -name "*.ts" -exec grep -l "router\.\|app\.\|get\|
     └── doc-template.md        # 文档模板
 ```
 
-### 26.5 第四步：测试
+### 31.5 第四步：测试
 
 ```bash
 # 在项目中测试
@@ -1888,7 +2190,7 @@ claude
 
 检查输出的文档是否准确。
 
-### 26.6 第五步：迭代
+### 31.6 第五步：迭代
 
 根据测试结果调整：
 
@@ -1896,7 +2198,7 @@ claude
 - 参数类型不对？改进类型推断逻辑
 - 文档格式不好看？修改模板
 
-### 26.7 第六步：发布
+### 31.7 第六步：发布
 
 ```bash
 # 写 README
@@ -1912,13 +2214,13 @@ npm publish
 
 ---
 
-## §27 场景三：团队协作中的 Skills
+## §32 场景三：团队协作中的 Skills
 
-### 27.1 需求
+### 32.1 需求
 
 一个分布式团队，3个城市、8个人。需要统一的代码规范和工作流程。
 
-### 27.2 方案：共享 Skills 仓库
+### 32.2 方案：共享 Skills 仓库
 
 ```
 team-skills/                    # 独立仓库
@@ -1932,7 +2234,7 @@ team-skills/                    # 独立仓库
 └── install.sh                  # 一键安装脚本
 ```
 
-### 27.3 一键安装脚本
+### 32.3 一键安装脚本
 
 ```bash
 #!/bin/bash
@@ -1956,7 +2258,7 @@ cd your-project
 /tmp/team-skills/install.sh
 ```
 
-### 27.4 版本管理
+### 32.4 版本管理
 
 Skills 仓库用 Git 管理版本：
 
@@ -1967,7 +2269,7 @@ git pull
 ./install.sh  # 重新安装到项目
 ```
 
-### 27.5 团队规范
+### 32.5 团队规范
 
 | 规范 | 负责 Skill | 作用 |
 |------|-----------|------|
@@ -1976,7 +2278,7 @@ git pull
 | 审查标准 | review-checklist | 统一审查清单 |
 | 部署流程 | deploy-checklist | 统一部署步骤 |
 
-### 27.6 实际效果
+### 32.6 实际效果
 
 - 新人入职第一天就能用上团队的 Skills
 - 不同城市的开发者用同一套规范
@@ -2180,7 +2482,7 @@ Skills 改变的不是 Claude Code 的能力，是 Claude Code 的专注度。
 
 没有 Skills，Claude Code 是一个什么都会的通才。有了 Skills，它在每个领域都能变成专家。
 
-这本书的27个章节，从"Skills 是什么"讲到"团队协作中的 Skills"。每章都建立在前一章的基础上。
+这本书的32个章节，从"Skills 是什么"讲到"团队协作中的 Skills"。每章都建立在前一章的基础上。
 
 我的建议：
 
